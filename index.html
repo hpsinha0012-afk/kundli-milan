@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#A32E38">
+<title>कुंडली मिलान — गुण मिलान व मंगल दोष</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪔</text></svg>">
+<body>
+<!-- ARTIFACT-START -->
+<style>
+:root{
+  --bg:#FAF5EC; --card:#FFFFFF; --ink:#33221B; --muted:#8A7263;
+  --accent:#A32E38; --accent-soft:#F3E2E0; --gold:#C98A2D;
+  --good:#2E7D4F; --good-soft:#E3F0E8; --warn:#A97812; --warn-soft:#F7EDD8;
+  --bad:#B3372F; --bad-soft:#F6E3E1; --line:#E9DCC9; --chip:#F5EADA;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#191210; --card:#241A16; --ink:#F2E7DB; --muted:#B49A87;
+    --accent:#E0707A; --accent-soft:#3A2224; --gold:#E0A94E;
+    --good:#63B98C; --good-soft:#1F3529; --warn:#D9A441; --warn-soft:#3A2F1A;
+    --bad:#E07862; --bad-soft:#3D221E; --line:#3A2C25; --chip:#31241E;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#FAF5EC; --card:#FFFFFF; --ink:#33221B; --muted:#8A7263;
+  --accent:#A32E38; --accent-soft:#F3E2E0; --gold:#C98A2D;
+  --good:#2E7D4F; --good-soft:#E3F0E8; --warn:#A97812; --warn-soft:#F7EDD8;
+  --bad:#B3372F; --bad-soft:#F6E3E1; --line:#E9DCC9; --chip:#F5EADA;
+}
+:root[data-theme="dark"]{
+  --bg:#191210; --card:#241A16; --ink:#F2E7DB; --muted:#B49A87;
+  --accent:#E0707A; --accent-soft:#3A2224; --gold:#E0A94E;
+  --good:#63B98C; --good-soft:#1F3529; --warn:#D9A441; --warn-soft:#3A2F1A;
+  --bad:#E07862; --bad-soft:#3D221E; --line:#3A2C25; --chip:#31241E;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Noto Sans Devanagari UI","Noto Sans Devanagari","Nirmala UI","Mangal",system-ui,-apple-system,sans-serif;
+  line-height:1.55; padding-bottom:48px;
+}
+.topband{height:6px; background:repeating-linear-gradient(90deg, var(--accent) 0 18px, var(--gold) 18px 36px);}
+.wrap{max-width:560px; margin:0 auto; padding:0 14px;}
+header{padding:20px 0 6px; text-align:center; position:relative;}
+header h1{font-size:1.7rem; font-weight:700; color:var(--accent); letter-spacing:.5px;}
+header p{color:var(--muted); font-size:.85rem; margin-top:2px;}
+.langbtn{
+  display:inline-block; margin-top:10px; cursor:pointer; font-family:inherit;
+  background:var(--card); color:var(--accent); border:1.5px solid var(--accent);
+  border-radius:99px; padding:9px 24px; font-size:.9rem; font-weight:700;
+  min-height:42px; touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+}
+.langbtn:active{transform:scale(.96);}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:14px;
+  padding:16px; margin-top:14px; box-shadow:0 1px 4px rgba(60,30,20,.06);
+}
+.card h2{font-size:1.05rem; margin-bottom:10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.tag{font-size:.7rem; font-weight:600; letter-spacing:.08em; color:var(--card); background:var(--accent); border-radius:99px; padding:2px 10px;}
+.tag.girl{background:var(--gold);}
+.field{margin-bottom:10px; position:relative;}
+.timerow{display:flex; gap:8px;}
+.timerow select{flex:1; min-width:0; text-align:center;}
+.thint{font-size:.72rem; color:var(--muted); margin-top:4px;}
+.suggest{position:absolute; top:100%; left:0; right:0; background:var(--card); border:1.5px solid var(--line);
+  border-radius:10px; margin-top:2px; max-height:230px; overflow-y:auto; z-index:60; box-shadow:0 6px 18px rgba(40,20,10,.18);}
+.suggest div{padding:11px 12px; border-bottom:1px solid var(--line); cursor:pointer; font-size:.95rem;}
+.suggest div:last-child{border-bottom:none;}
+.suggest div small{color:var(--muted); margin-left:6px;}
+.suggest div:active{background:var(--chip);}
+.field label{display:block; font-size:.85rem; font-weight:600; margin-bottom:3px;}
+.field label small{color:var(--muted); font-weight:400;}
+input[type=text],input[type=date],input[type=time],input[type=number],select{
+  width:100%; font-size:1rem; padding:11px 12px; border:1.5px solid var(--line);
+  border-radius:10px; background:var(--bg); color:var(--ink);
+  font-family:inherit; min-height:46px;
+}
+input:focus,select:focus{outline:2px solid var(--gold); outline-offset:1px; border-color:var(--gold);}
+.row2{display:flex; gap:10px;}
+.row2>.field{flex:1;}
+details.manual{margin-top:2px;}
+details.manual summary{font-size:.82rem; color:var(--accent); cursor:pointer; padding:4px 0;}
+details.manual .inner{display:flex; flex-direction:column; gap:8px; padding:8px 0 4px;}
+.checkline{display:flex; align-items:center; gap:8px; font-size:.85rem; color:var(--muted); margin-top:4px;}
+.checkline input{width:20px; height:20px; accent-color:var(--accent);}
+.btn{
+  display:block; width:100%; border:none; cursor:pointer; font-family:inherit;
+  background:var(--accent); color:#fff; font-size:1.15rem; font-weight:700;
+  padding:15px; border-radius:12px; margin-top:16px; letter-spacing:.03em;
+}
+.btn:active{transform:scale(.985);}
+.btn.secondary{background:var(--chip); color:var(--ink); font-size:.95rem; padding:12px; font-weight:600;}
+.btnrow{display:flex; gap:10px;}
+.btnrow .btn{margin-top:10px;}
+.errbox{background:var(--bad-soft); color:var(--bad); border-radius:10px; padding:10px 12px; font-size:.9rem; margin-top:12px; display:none;}
+/* results */
+.scorewrap{display:flex; align-items:center; gap:16px;}
+.dial{flex:0 0 132px;}
+.dial text{fill:var(--ink); font-family:inherit;}
+.scoremeta .verdict{font-size:1.15rem; font-weight:700;}
+.scoremeta .verdict.good{color:var(--good);} .scoremeta .verdict.warn{color:var(--warn);} .scoremeta .verdict.bad{color:var(--bad);}
+.scoremeta .sub{font-size:.85rem; color:var(--muted); margin-top:4px;}
+.pair{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;}
+.pcard{background:var(--chip); border-radius:10px; padding:10px 12px;}
+.pcard .who{font-size:.75rem; font-weight:700; letter-spacing:.06em; color:var(--muted);}
+.pcard .rashi{font-size:1.25rem; font-weight:700; color:var(--accent); margin-top:2px;}
+.pcard .nak{font-size:.85rem; margin-top:1px;}
+.pcard .extra{font-size:.78rem; color:var(--muted); margin-top:3px;}
+.statuschip{display:inline-block; font-size:.85rem; font-weight:700; border-radius:99px; padding:4px 14px; margin-top:4px;}
+.statuschip.good{background:var(--good-soft); color:var(--good);}
+.statuschip.warn{background:var(--warn-soft); color:var(--warn);}
+.statuschip.bad{background:var(--bad-soft); color:var(--bad);}
+table.koota{width:100%; border-collapse:collapse; margin-top:8px; font-variant-numeric:tabular-nums;}
+table.koota th{font-size:.75rem; letter-spacing:.05em; color:var(--muted); text-align:left; padding:6px 4px; border-bottom:1.5px solid var(--line);}
+table.koota td{padding:8px 4px; border-bottom:1px solid var(--line); font-size:.92rem;}
+table.koota td.pts{text-align:right; font-weight:700; white-space:nowrap;}
+table.koota td.pts.z{color:var(--bad);}
+table.koota .kname{font-weight:600;}
+table.koota .kdesc{display:block; font-size:.75rem; color:var(--muted); font-weight:400;}
+ul.issues{list-style:none; margin-top:6px;}
+ul.issues li{padding:9px 12px; border-radius:10px; margin-top:8px; font-size:.9rem;}
+ul.issues li.bad{background:var(--bad-soft); color:var(--bad);}
+ul.issues li.warn{background:var(--warn-soft); color:var(--warn);}
+ul.issues li.good{background:var(--good-soft); color:var(--good);}
+ul.issues li b{display:block;}
+ul.issues li small{opacity:.9; font-weight:400;}
+table.saved{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums;}
+table.saved th{font-size:.72rem; color:var(--muted); text-align:left; padding:5px 4px; border-bottom:1.5px solid var(--line);}
+table.saved td{padding:8px 4px; border-bottom:1px solid var(--line); font-size:.88rem;}
+table.saved td.g{font-weight:700;}
+table.saved button{background:none; border:none; color:var(--bad); font-size:1.05rem; cursor:pointer; padding:4px 8px;}
+.note{font-size:.78rem; color:var(--muted); margin-top:10px;}
+.disclaimer{font-size:.78rem; color:var(--muted); text-align:center; margin-top:22px; padding:0 8px;}
+.madeby{font-size:.85rem; color:var(--accent); font-weight:700; text-align:center; margin-top:14px; letter-spacing:.06em;}
+.hidden{display:none;}
+#testout{font-family:monospace; font-size:.8rem; white-space:pre-wrap; padding:14px;}
+@media (max-width:380px){ .scorewrap{gap:10px;} .dial{flex-basis:110px;} }
+@media (prefers-reduced-motion: no-preference){
+  .card{animation:rise .25s ease-out;}
+  @keyframes rise{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+}
+</style>
+
+<div class="topband"></div>
+<div class="wrap" id="app">
+<div id="jswarn" style="background:#B3372F;color:#fff;padding:12px 14px;border-radius:10px;margin-top:14px;font-size:.95rem;">
+⚠ यह ऐप इस प्रीव्यू में नहीं चलेगा — गुण मिलान और भाषा-बटन काम नहीं करेंगे। कृपया इसे Safari या Chrome ब्राउज़र में खोलें।<br>
+This app cannot run in this preview — matching and the language button will not work. Please open it in the Safari or Chrome browser.
+</div>
+<script>document.getElementById("jswarn").style.display = "none";</script>
+<header>
+  <h1 data-i18n="title">॥ कुंडली मिलान ॥</h1>
+  <p data-i18n="subtitle">गुण मिलान (36 गुण) • मंगल दोष • राशि व नक्षत्र</p>
+  <button class="langbtn" id="langBtn" type="button">🌐 English</button>
+</header>
+
+<section class="card">
+  <h2><span class="tag" data-i18n="tag_groom">वर</span> <span data-i18n="h_boy">लड़के का विवरण</span></h2>
+  <div class="field"><label for="b_name" data-i18n="lbl_name">नाम</label><input type="text" id="b_name" data-i18n-ph="ph_boy_name" placeholder="लड़के का नाम" autocomplete="off"></div>
+  <div class="field"><label for="b_date" data-i18n="lbl_date">जन्म तिथि</label><input type="date" id="b_date"></div>
+  <div class="field"><label for="b_hh" data-i18n="lbl_time">जन्म समय</label>
+    <div class="timerow">
+      <select id="b_hh"><option value="" data-i18n="opt_hour">घंटा</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select>
+      <select id="b_mm"><option value="" data-i18n="opt_min">मिनट</option><option>00</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option>28</option><option>29</option><option>30</option><option>31</option><option>32</option><option>33</option><option>34</option><option>35</option><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option><option>47</option><option>48</option><option>49</option><option>50</option><option>51</option><option>52</option><option>53</option><option>54</option><option>55</option><option>56</option><option>57</option><option>58</option><option>59</option></select>
+      <select id="b_ap"><option value="AM">AM</option><option value="PM">PM</option></select>
+    </div>
+    <p class="thint" data-i18n="time_hint">AM = रात 12:00 से सुबह 11:59 तक • PM = दोपहर 12:00 से रात 11:59 तक</p>
+  </div>
+  <div class="field"><label for="b_city"><span data-i18n="lbl_place">जन्म स्थान</span> <small data-i18n="lbl_place_hint">(शहर लिखना शुरू करें)</small></label>
+    <input type="text" id="b_city" data-i18n-ph="ph_city" placeholder="जैसे: Patna / Delhi" autocomplete="off"></div>
+  <details class="manual" id="b_manualbox"><summary data-i18n="manual_sum">शहर सूची में नहीं? अक्षांश-देशांतर व समय-क्षेत्र डालें</summary>
+    <div class="inner">
+      <div class="row2">
+        <div class="field"><label data-i18n="lbl_lat">अक्षांश (Latitude)</label><input type="number" id="b_lat" step="0.01" placeholder="25.59"></div>
+        <div class="field"><label data-i18n="lbl_lon">देशांतर (Longitude)</label><input type="number" id="b_lon" step="0.01" placeholder="85.14"></div>
+      </div>
+      <div class="field"><label data-i18n="lbl_tz">समय-क्षेत्र</label>
+        <select id="b_tz">
+          <option value="330" selected data-i18n="tz_in">भारत (IST, +5:30)</option>
+          <option value="345" data-i18n="tz_np">नेपाल (+5:45)</option>
+          <option value="240" data-i18n="tz_ae">दुबई / UAE (+4)</option>
+          <option value="0" data-i18n="tz_uk">UK (GMT)</option>
+          <option value="-300" data-i18n="tz_use">USA पूर्वी (-5)</option>
+          <option value="-360" data-i18n="tz_usc">USA मध्य (-6)</option>
+          <option value="-480" data-i18n="tz_usw">USA पश्चिमी (-8)</option>
+          <option value="480" data-i18n="tz_sg">सिंगापुर (+8)</option>
+          <option value="600" data-i18n="tz_au">ऑस्ट्रेलिया पूर्वी (+10)</option>
+        </select>
+      </div>
+    </div>
+  </details>
+  <label class="checkline"><input type="checkbox" id="b_approx"> <span data-i18n="lbl_approx">जन्म समय अनुमानित है (पक्का नहीं पता)</span></label>
+</section>
+
+<section class="card">
+  <h2><span class="tag girl" data-i18n="tag_bride">वधू</span> <span data-i18n="h_girl">लड़की का विवरण</span></h2>
+  <div class="field"><label for="g_name" data-i18n="lbl_name">नाम</label><input type="text" id="g_name" data-i18n-ph="ph_girl_name" placeholder="लड़की का नाम" autocomplete="off"></div>
+  <div class="field"><label for="g_date" data-i18n="lbl_date">जन्म तिथि</label><input type="date" id="g_date"></div>
+  <div class="field"><label for="g_hh" data-i18n="lbl_time">जन्म समय</label>
+    <div class="timerow">
+      <select id="g_hh"><option value="" data-i18n="opt_hour">घंटा</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select>
+      <select id="g_mm"><option value="" data-i18n="opt_min">मिनट</option><option>00</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option>28</option><option>29</option><option>30</option><option>31</option><option>32</option><option>33</option><option>34</option><option>35</option><option>36</option><option>37</option><option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option><option>47</option><option>48</option><option>49</option><option>50</option><option>51</option><option>52</option><option>53</option><option>54</option><option>55</option><option>56</option><option>57</option><option>58</option><option>59</option></select>
+      <select id="g_ap"><option value="AM">AM</option><option value="PM">PM</option></select>
+    </div>
+    <p class="thint" data-i18n="time_hint">AM = रात 12:00 से सुबह 11:59 तक • PM = दोपहर 12:00 से रात 11:59 तक</p>
+  </div>
+  <div class="field"><label for="g_city"><span data-i18n="lbl_place">जन्म स्थान</span> <small data-i18n="lbl_place_hint">(शहर लिखना शुरू करें)</small></label>
+    <input type="text" id="g_city" data-i18n-ph="ph_city2" placeholder="जैसे: Muzaffarpur / Lucknow" autocomplete="off"></div>
+  <details class="manual" id="g_manualbox"><summary data-i18n="manual_sum">शहर सूची में नहीं? अक्षांश-देशांतर व समय-क्षेत्र डालें</summary>
+    <div class="inner">
+      <div class="row2">
+        <div class="field"><label data-i18n="lbl_lat">अक्षांश (Latitude)</label><input type="number" id="g_lat" step="0.01" placeholder="26.12"></div>
+        <div class="field"><label data-i18n="lbl_lon">देशांतर (Longitude)</label><input type="number" id="g_lon" step="0.01" placeholder="85.39"></div>
+      </div>
+      <div class="field"><label data-i18n="lbl_tz">समय-क्षेत्र</label>
+        <select id="g_tz">
+          <option value="330" selected data-i18n="tz_in">भारत (IST, +5:30)</option>
+          <option value="345" data-i18n="tz_np">नेपाल (+5:45)</option>
+          <option value="240" data-i18n="tz_ae">दुबई / UAE (+4)</option>
+          <option value="0" data-i18n="tz_uk">UK (GMT)</option>
+          <option value="-300" data-i18n="tz_use">USA पूर्वी (-5)</option>
+          <option value="-360" data-i18n="tz_usc">USA मध्य (-6)</option>
+          <option value="-480" data-i18n="tz_usw">USA पश्चिमी (-8)</option>
+          <option value="480" data-i18n="tz_sg">सिंगापुर (+8)</option>
+          <option value="600" data-i18n="tz_au">ऑस्ट्रेलिया पूर्वी (+10)</option>
+        </select>
+      </div>
+    </div>
+  </details>
+  <label class="checkline"><input type="checkbox" id="g_approx"> <span data-i18n="lbl_approx">जन्म समय अनुमानित है (पक्का नहीं पता)</span></label>
+</section>
+
+<div class="errbox" id="errbox"></div>
+<button class="btn" id="calcBtn" data-i18n="btn_calc">🔍 गुण मिलान करें</button>
+<div class="btnrow">
+  <button class="btn secondary" id="newGirlBtn" data-i18n="btn_new">नई लड़की के लिए खाली करें</button>
+</div>
+
+<div id="result"></div>
+
+<section class="card" id="savedCard" style="display:none">
+  <h2 data-i18n="h_saved">💾 सहेजी गई लड़कियाँ (तुलना)</h2>
+  <div style="overflow-x:auto"><table class="saved" id="savedTable"></table></div>
+  <p class="note" data-i18n="saved_note">सबसे अधिक गुण वाली ऊपर। ✕ दबाकर हटाएँ।</p>
+</section>
+
+<p class="disclaimer" data-i18n="disclaimer">यह गणना ज्योतिषीय सूत्रों (लाहिड़ी अयनांश, अष्टकूट मिलान) पर आधारित है और केवल मार्गदर्शन के लिए है। अंतिम निर्णय से पहले किसी योग्य ज्योतिषी / पंडित जी से अवश्य परामर्श करें। जन्म समय जितना सटीक होगा, परिणाम उतना ही सही होगा।</p>
+<p class="madeby" data-i18n="made_by">❁ रश्मि सिन्हा द्वारा निर्मित ❁</p>
+</div>
+
+<script>
+"use strict";
+/* show any script error on screen so problems on phones are visible, not silent */
+window.onerror = function(msg, src, line){
+  try {
+    var d = document.createElement("div");
+    d.style.cssText = "background:#B3372F;color:#fff;padding:10px 14px;border-radius:10px;margin:10px 14px;font-size:.8rem;word-break:break-word;";
+    d.textContent = "⚠ App error: " + msg + " (line " + line + ")";
+    document.body.insertBefore(d, document.body.firstChild);
+  } catch(e){}
+};
+/* ============ LANGUAGE ============ */
+var LANG = "hi";
+try { LANG = localStorage.getItem("kundliLang") || "hi"; } catch(e){}
+var TXT = {
+hi: {
+  title:"॥ कुंडली मिलान ॥", subtitle:"गुण मिलान (36 गुण) • मंगल दोष • राशि व नक्षत्र",
+  doc_title:"कुंडली मिलान — गुण मिलान व मंगल दोष",
+  tag_groom:"वर", tag_bride:"वधू", h_boy:"लड़के का विवरण", h_girl:"लड़की का विवरण",
+  lbl_name:"नाम", ph_boy_name:"लड़के का नाम", ph_girl_name:"लड़की का नाम",
+  lbl_date:"जन्म तिथि", lbl_time:"जन्म समय", lbl_place:"जन्म स्थान", lbl_place_hint:"(शहर लिखना शुरू करें)",
+  opt_hour:"घंटा", opt_min:"मिनट",
+  time_hint:"AM = रात 12:00 से सुबह 11:59 तक • PM = दोपहर 12:00 से रात 11:59 तक",
+  ph_city:"जैसे: Patna / Delhi", ph_city2:"जैसे: Muzaffarpur / Lucknow",
+  manual_sum:"शहर सूची में नहीं? अक्षांश-देशांतर व समय-क्षेत्र डालें",
+  lbl_lat:"अक्षांश (Latitude)", lbl_lon:"देशांतर (Longitude)", lbl_tz:"समय-क्षेत्र",
+  tz_in:"भारत (IST, +5:30)", tz_np:"नेपाल (+5:45)", tz_ae:"दुबई / UAE (+4)", tz_uk:"UK (GMT)",
+  tz_use:"USA पूर्वी (-5)", tz_usc:"USA मध्य (-6)", tz_usw:"USA पश्चिमी (-8)", tz_sg:"सिंगापुर (+8)", tz_au:"ऑस्ट्रेलिया पूर्वी (+10)",
+  lbl_approx:"जन्म समय अनुमानित है (पक्का नहीं पता)",
+  btn_calc:"🔍 गुण मिलान करें", btn_new:"नई लड़की के लिए खाली करें",
+  h_saved:"💾 सहेजी गई लड़कियाँ (तुलना)", saved_note:"सबसे अधिक गुण वाली ऊपर। ✕ दबाकर हटाएँ।",
+  disclaimer:"यह गणना ज्योतिषीय सूत्रों (लाहिड़ी अयनांश, अष्टकूट मिलान) पर आधारित है और केवल मार्गदर्शन के लिए है। अंतिम निर्णय से पहले किसी योग्य ज्योतिषी / पंडित जी से अवश्य परामर्श करें। जन्म समय जितना सटीक होगा, परिणाम उतना ही सही होगा।",
+  who_boy:"लड़के", who_girl:"लड़की",
+  err_date:"{who} की जन्म तिथि भरें।", err_time:"{who} का जन्म समय भरें।",
+  err_place:"{who} का जन्म स्थान सूची से चुनें, या नीचे अक्षांश-देशांतर भरें।",
+  def_boy:"लड़का", def_girl:"लड़की",
+  h_result:"📿 मिलान परिणाम — ", h_rashi:"🌙 राशि व नक्षत्र", h_manglik:"🔴 मंगल दोष (मांगलिक)",
+  h_koota:"🧮 अष्टकूट गुण मिलान", h_issues:"⚖️ दोष व ध्यान देने योग्य बातें",
+  dial_sub:"/ 36 गुण", scale:"18 से कम: अशुभ • 18–24: मध्यम • 25–32: बहुत अच्छा • 33–36: उत्तम",
+  card_girl:"लड़की — ", card_boy:"लड़का — ",
+  rashi_word:" राशि", nak_line:"{n} नक्षत्र, पद {p}",
+  lbl_moon:"चंद्र", lbl_gana:"गण", lbl_nadi:"नाड़ी", lbl_lagna:"लग्न",
+  th_koota:"कूट", th_points:"गुण", total:"कुल",
+  btn_save:"💾 इस लड़की को सहेजें", btn_share:"📤 साझा करें",
+  th_girl:"लड़की", th_rashi:"राशि", th_manglik:"मांगलिक",
+  verdicts:{ notrec:"गुण कम हैं — विवाह अनुशंसित नहीं", dosha:"गुण ठीक हैं, पर दोष हैं — पंडित जी से परामर्श लें",
+    excellent:"उत्तम मिलान — अति शुभ", verygood:"बहुत अच्छा मिलान", average:"मध्यम मिलान — स्वीकार्य" },
+  mstatus:{ full:"मांगलिक", partial:"आंशिक मांगलिक", second:"अल्प मांगलिक*", none:"मांगलिक नहीं" },
+  m_detail:"मंगल: {r}, लग्न से {h1} भाव, चंद्र से {h2} भाव",
+  m_own:" (मंगल स्वराशि में — दोष हल्का)", m_second:" — *केवल द्वितीय भाव (दक्षिण भारतीय मत)",
+  kootas:["वर्ण","वश्य","तारा","योनि","ग्रह मैत्री","गण","भकूट","नाड़ी"],
+  kdesc:["काम व स्वभाव का स्तर","आपसी आकर्षण व प्रभाव","भाग्य व स्वास्थ्य","शारीरिक व स्वभावगत मेल","मानसिक तालमेल व मित्रता","स्वभाव व प्रकृति","धन, परिवार व भावनात्मक बंधन","स्वास्थ्य व संतान"],
+  tara_d:["दोनों तारा शुभ","एक तारा अशुभ","दोनों तारा अशुभ"],
+  bhakoot_d:"राशि स्थिति {d1}/{d2}", dosha_suffix:" (दोष)", same_nadi:" (समान नाड़ी)",
+  iss_nadi_t:"नाड़ी दोष ({n} नाड़ी दोनों की)",
+  iss_nadi_s:"स्वास्थ्य व संतान पक्ष के लिए महत्वपूर्ण दोष माना जाता है। पंडित जी से परिहार पूछें।",
+  iss_nadi_c:"परंतु शास्त्रानुसार परिहार (छूट) बन रहा है — पंडित जी से पुष्टि कराएँ।",
+  iss_bhk_t:"भकूट दोष", iss_bhk_s:"आर्थिक व पारिवारिक तालमेल पर असर माना जाता है।",
+  iss_bhk_c:"परंतु राशि स्वामी मित्र हैं, अतः दोष का परिहार माना जा सकता है।",
+  iss_gana_t:"गण दोष", iss_gana_s:"स्वभाव में टकराव संभव — देव/राक्षस गण का अंतर है।",
+  iss_yoni_t:"योनि मैत्री कम ({s}/4)", iss_yoni_s:"आपसी निकटता व स्वभाव के मेल में कमी मानी जाती है।",
+  iss_mtr_t:"ग्रह मैत्री कम ({s}/5)", iss_mtr_s:"मानसिक तालमेल पर ध्यान देना होगा।",
+  iss_mm_t:"मंगल दोष का अंतर", iss_mm_s:"एक मांगलिक है और दूसरा नहीं — परंपरा में इसे विचारणीय माना जाता है। उपाय/परिहार हेतु पंडित जी से मिलें।",
+  iss_both_t:"दोनों मांगलिक", iss_both_s:"दोनों को मंगल दोष है, अतः दोष परस्पर संतुलित (भंग) माना जाता है।",
+  iss_none_t:"कोई प्रमुख दोष नहीं", iss_none_s:"नाड़ी, भकूट, गण व मंगल — सभी अनुकूल हैं।",
+  note_approx:"⚠ जन्म समय अनुमानित बताया गया है — लग्न व मंगल दोष का परिणाम बदल सकता है। राशि-नक्षत्र प्रायः स्थिर रहते हैं।",
+  note_boundary:"⚠ चंद्रमा नक्षत्र की सीमा के बहुत निकट है — जन्म समय में कुछ मिनट का अंतर नक्षत्र बदल सकता है। पंडित जी से पुष्टि कराएँ।",
+  share_title:"कुंडली मिलान", share_gun:"गुण", share_nadi:"⚠ नाड़ी दोष", share_bhk:"⚠ भकूट दोष", share_parihar:" (परिहार संभव)",
+  copied:"परिणाम कॉपी हो गया — अब WhatsApp आदि में पेस्ट करें।",
+  made_by:"❁ रश्मि सिन्हा द्वारा निर्मित ❁",
+  rashi:["मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या","तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"],
+  nak:["अश्विनी","भरणी","कृत्तिका","रोहिणी","मृगशिरा","आर्द्रा","पुनर्वसु","पुष्य","आश्लेषा","मघा","पूर्वा फाल्गुनी","उत्तरा फाल्गुनी","हस्त","चित्रा","स्वाति","विशाखा","अनुराधा","ज्येष्ठा","मूल","पूर्वाषाढ़ा","उत्तराषाढ़ा","श्रवण","धनिष्ठा","शतभिषा","पूर्वा भाद्रपद","उत्तरा भाद्रपद","रेवती"],
+  varna:["शूद्र","वैश्य","क्षत्रिय","ब्राह्मण"],
+  vashya:["चतुष्पद","मानव","जलचर","वनचर","कीट"],
+  yoni:["अश्व","गज","मेष","सर्प","श्वान","मार्जार","मूषक","गौ","महिष","व्याघ्र","मृग","वानर","नकुल","सिंह"],
+  lord:["सूर्य","चंद्र","मंगल","बुध","गुरु","शुक्र","शनि"],
+  gana:["देव","मनुष्य","राक्षस"],
+  nadi:["आदि","मध्य","अंत्य"]
+},
+en: {
+  title:"॥ Kundli Milan ॥", subtitle:"Gun Milan (36 points) • Mangal Dosha • Rashi & Nakshatra",
+  doc_title:"Kundli Milan — Gun Milan & Mangal Dosha",
+  tag_groom:"GROOM", tag_bride:"BRIDE", h_boy:"Boy's Details", h_girl:"Girl's Details",
+  lbl_name:"Name", ph_boy_name:"Boy's name", ph_girl_name:"Girl's name",
+  lbl_date:"Birth Date", lbl_time:"Birth Time", lbl_place:"Birth Place", lbl_place_hint:"(start typing the city)",
+  opt_hour:"Hour", opt_min:"Minute",
+  time_hint:"AM = 12:00 midnight to 11:59 morning • PM = 12:00 noon to 11:59 night",
+  ph_city:"e.g. Patna / Delhi", ph_city2:"e.g. Muzaffarpur / Lucknow",
+  manual_sum:"City not in the list? Enter latitude-longitude & time zone",
+  lbl_lat:"Latitude", lbl_lon:"Longitude", lbl_tz:"Time zone",
+  tz_in:"India (IST, +5:30)", tz_np:"Nepal (+5:45)", tz_ae:"Dubai / UAE (+4)", tz_uk:"UK (GMT)",
+  tz_use:"USA Eastern (-5)", tz_usc:"USA Central (-6)", tz_usw:"USA Pacific (-8)", tz_sg:"Singapore (+8)", tz_au:"Australia Eastern (+10)",
+  lbl_approx:"Birth time is approximate (not exactly known)",
+  btn_calc:"🔍 Match Kundli", btn_new:"Clear for a new girl",
+  h_saved:"💾 Saved Girls (Comparison)", saved_note:"Highest score on top. Tap ✕ to remove.",
+  disclaimer:"This calculation follows classical astrological methods (Lahiri ayanamsa, Ashtakoot matching) and is for guidance only. Please consult a qualified astrologer before any final decision. The more accurate the birth time, the more accurate the result.",
+  who_boy:"the boy", who_girl:"the girl",
+  err_date:"Enter {who}'s birth date.", err_time:"Enter {who}'s birth time.",
+  err_place:"Choose {who}'s birth place from the list, or enter latitude-longitude below.",
+  def_boy:"Boy", def_girl:"Girl",
+  h_result:"📿 Match Result — ", h_rashi:"🌙 Rashi & Nakshatra", h_manglik:"🔴 Mangal Dosha (Manglik)",
+  h_koota:"🧮 Ashtakoot Gun Milan", h_issues:"⚖️ Doshas & Points to Note",
+  dial_sub:"/ 36 points", scale:"Below 18: poor • 18–24: average • 25–32: very good • 33–36: excellent",
+  card_girl:"Girl — ", card_boy:"Boy — ",
+  rashi_word:"", nak_line:"{n} Nakshatra, Pada {p}",
+  lbl_moon:"Moon", lbl_gana:"Gana", lbl_nadi:"Nadi", lbl_lagna:"Lagna",
+  th_koota:"Koota", th_points:"Points", total:"Total",
+  btn_save:"💾 Save this girl", btn_share:"📤 Share",
+  th_girl:"Girl", th_rashi:"Rashi", th_manglik:"Manglik",
+  verdicts:{ notrec:"Low score — marriage not recommended", dosha:"Score is okay, but doshas present — consult a pandit",
+    excellent:"Excellent match — highly auspicious", verygood:"Very good match", average:"Average match — acceptable" },
+  mstatus:{ full:"Manglik", partial:"Partial Manglik", second:"Mild Manglik*", none:"Not Manglik" },
+  m_detail:"Mars in {r}, house {h1} from Lagna, house {h2} from Moon",
+  m_own:" (Mars in own sign — dosha milder)", m_second:" — *only 2nd house (South Indian tradition)",
+  kootas:["Varna","Vashya","Tara","Yoni","Graha Maitri","Gana","Bhakoot","Nadi"],
+  kdesc:["Work & nature level","Mutual attraction & influence","Fortune & health","Physical & nature compatibility","Mental bond & friendship","Temperament & nature","Wealth, family & emotional bond","Health & progeny"],
+  tara_d:["Both taras auspicious","One tara inauspicious","Both taras inauspicious"],
+  bhakoot_d:"Rashi position {d1}/{d2}", dosha_suffix:" (dosha)", same_nadi:" (same Nadi)",
+  iss_nadi_t:"Nadi Dosha (both have {n} Nadi)",
+  iss_nadi_s:"Considered important for health and children. Ask a pandit about remedies (parihar).",
+  iss_nadi_c:"However, per shastra a cancellation (parihar) applies — please confirm with a pandit.",
+  iss_bhk_t:"Bhakoot Dosha", iss_bhk_s:"Believed to affect finances and family harmony.",
+  iss_bhk_c:"However the rashi lords are friends, so the dosha may be considered cancelled.",
+  iss_gana_t:"Gana Dosha", iss_gana_s:"Clash of temperaments possible — Deva/Rakshasa gana difference.",
+  iss_yoni_t:"Low Yoni compatibility ({s}/4)", iss_yoni_s:"Indicates lower physical & nature compatibility.",
+  iss_mtr_t:"Low Graha Maitri ({s}/5)", iss_mtr_s:"Mental compatibility will need attention.",
+  iss_mm_t:"Manglik mismatch", iss_mm_s:"One is Manglik and the other is not — traditionally considered significant. Consult a pandit for remedies.",
+  iss_both_t:"Both Manglik", iss_both_s:"Both have Mangal dosha, so it is considered mutually balanced (cancelled).",
+  iss_none_t:"No major dosha", iss_none_s:"Nadi, Bhakoot, Gana and Mangal — all favourable.",
+  note_approx:"⚠ Birth time was marked approximate — Lagna and Mangal dosha results may change. Rashi & nakshatra usually stay the same.",
+  note_boundary:"⚠ The Moon is very close to a nakshatra boundary — a few minutes' difference in birth time can change the nakshatra. Please confirm with a pandit.",
+  share_title:"Kundli Milan", share_gun:"Gun", share_nadi:"⚠ Nadi Dosha", share_bhk:"⚠ Bhakoot Dosha", share_parihar:" (parihar possible)",
+  copied:"Result copied — paste it in WhatsApp etc.",
+  made_by:"❁ Made by Rashmi Sinha ❁",
+  rashi:["Mesh (Aries)","Vrishabh (Taurus)","Mithun (Gemini)","Kark (Cancer)","Simha (Leo)","Kanya (Virgo)","Tula (Libra)","Vrishchik (Scorpio)","Dhanu (Sagittarius)","Makar (Capricorn)","Kumbh (Aquarius)","Meen (Pisces)"],
+  nak:["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"],
+  varna:["Shudra","Vaishya","Kshatriya","Brahmin"],
+  vashya:["Chatushpad","Manav","Jalachar","Vanachar","Keet"],
+  yoni:["Horse","Elephant","Sheep","Serpent","Dog","Cat","Rat","Cow","Buffalo","Tiger","Deer","Monkey","Mongoose","Lion"],
+  lord:["Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn"],
+  gana:["Deva","Manushya","Rakshasa"],
+  nadi:["Adi","Madhya","Antya"]
+}
+};
+function L(){ return TXT[LANG]; }
+function fmt(s, map){ for (var k in map) s = s.replace("{"+k+"}", map[k]); return s; }
+var WESTERN = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+
+/* ============ ASTRONOMY ENGINE ============ */
+var D2R = Math.PI/180;
+function norm(x){ x = x % 360; return x < 0 ? x + 360 : x; }
+function toJD(y, mo, d, utHours){
+  if (mo <= 2){ y -= 1; mo += 12; }
+  var A = Math.floor(y/100), B = 2 - A + Math.floor(A/4);
+  return Math.floor(365.25*(y+4716)) + Math.floor(30.6001*(mo+1)) + d + B - 1524.5 + utHours/24;
+}
+/* Moon geocentric ecliptic longitude — Meeus, Astronomical Algorithms ch.47 (truncated series) */
+var MOON_TERMS = [
+[0,0,1,0,6288774],[2,0,-1,0,1274027],[2,0,0,0,658314],[0,0,2,0,213618],
+[0,1,0,0,-185116],[0,0,0,2,-114332],[2,0,-2,0,58793],[2,-1,-1,0,57066],
+[2,0,1,0,53322],[2,-1,0,0,45758],[0,1,-1,0,-40923],[1,0,0,0,-34720],
+[0,1,1,0,-30383],[2,0,0,-2,15327],[0,0,1,2,-12528],[0,0,1,-2,10980],
+[4,0,-1,0,10675],[0,0,3,0,10034],[4,0,-2,0,8548],[2,1,-1,0,-7888],
+[2,1,0,0,-6766],[1,0,-1,0,-5163],[1,1,0,0,4987],[2,-1,1,0,4036],
+[2,0,2,0,3994],[4,0,0,0,3861],[2,0,-3,0,3665],[0,1,-2,0,-2689],
+[2,0,-1,2,-2602],[2,-1,-2,0,2390],[1,0,1,0,-2348],[2,-2,0,0,2236],
+[0,1,2,0,-2120],[0,2,0,0,-2069],[2,-2,-1,0,2048],[2,0,1,-2,-1773],
+[2,0,0,2,-1595],[4,-1,-1,0,1215],[0,0,2,2,-1110],[3,0,-1,0,-892],
+[2,1,1,0,-810],[4,-1,-2,0,759],[0,2,-1,0,-713],[2,2,-1,0,-700],
+[2,1,-2,0,691],[2,-1,0,-2,596],[4,0,1,0,549],[0,0,4,0,537],
+[4,-1,0,0,520],[1,0,-2,0,-487]
+];
+function moonLon(jd){
+  var T = (jd - 2451545.0)/36525;
+  var Lp = norm(218.3164477 + 481267.88123421*T - 0.0015786*T*T + T*T*T/538841 - T*T*T*T/65194000);
+  var D  = norm(297.8501921 + 445267.1114034*T - 0.0018819*T*T + T*T*T/545868 - T*T*T*T/113065000);
+  var M  = norm(357.5291092 + 35999.0502909*T - 0.0001536*T*T + T*T*T/24490000);
+  var Mp = norm(134.9633964 + 477198.8675055*T + 0.0087414*T*T + T*T*T/69699 - T*T*T*T/14712000);
+  var F  = norm(93.2720950 + 483202.0175233*T - 0.0036539*T*T - T*T*T/3526000 + T*T*T*T/863310000);
+  var E = 1 - 0.002516*T - 0.0000074*T*T;
+  var sum = 0;
+  for (var i=0;i<MOON_TERMS.length;i++){
+    var t = MOON_TERMS[i], c = t[4];
+    if (Math.abs(t[1]) === 1) c *= E; else if (Math.abs(t[1]) === 2) c *= E*E;
+    sum += c * Math.sin((t[0]*D + t[1]*M + t[2]*Mp + t[3]*F) * D2R);
+  }
+  var A1 = norm(119.75 + 131.849*T), A2 = norm(53.09 + 479264.290*T);
+  sum += 3958*Math.sin(A1*D2R) + 1962*Math.sin((Lp-F)*D2R) + 318*Math.sin(A2*D2R);
+  return norm(Lp + sum/1e6);
+}
+/* Sun true longitude — Meeus ch.25 */
+function sunLon(jd){
+  var T = (jd - 2451545.0)/36525;
+  var L0 = norm(280.46646 + 36000.76983*T + 0.0003032*T*T);
+  var M  = norm(357.52911 + 35999.05029*T - 0.0001537*T*T);
+  var C = (1.914602 - 0.004817*T - 0.000014*T*T)*Math.sin(M*D2R)
+        + (0.019993 - 0.000101*T)*Math.sin(2*M*D2R)
+        + 0.000289*Math.sin(3*M*D2R);
+  return norm(L0 + C);
+}
+/* Mars geocentric longitude — Schlyter orbital elements */
+function sunSchlyter(d){
+  var w = 282.9404 + 4.70935e-5*d, e = 0.016709 - 1.151e-9*d, M = norm(356.0470 + 0.9856002585*d);
+  var E = M + (180/Math.PI)*e*Math.sin(M*D2R)*(1 + e*Math.cos(M*D2R));
+  var x = Math.cos(E*D2R) - e, y = Math.sin(E*D2R)*Math.sqrt(1 - e*e);
+  return { lon: norm(Math.atan2(y,x)/D2R + w), r: Math.sqrt(x*x + y*y) };
+}
+function marsLon(jd){
+  var d = jd - 2451543.5;
+  var s = sunSchlyter(d);
+  var N = 49.5574 + 2.11081e-5*d, inc = 1.8497 - 1.78e-8*d, w = 286.5016 + 2.92961e-5*d;
+  var a = 1.523688, e = 0.093405 + 2.516e-9*d, M = norm(18.6021 + 0.5240207766*d);
+  var E = M + (180/Math.PI)*e*Math.sin(M*D2R)*(1 + e*Math.cos(M*D2R));
+  for (var k=0;k<6;k++){
+    E = E - (E - (180/Math.PI)*e*Math.sin(E*D2R) - M)/(1 - e*Math.cos(E*D2R));
+  }
+  var xv = a*(Math.cos(E*D2R) - e), yv = a*Math.sqrt(1 - e*e)*Math.sin(E*D2R);
+  var v = Math.atan2(yv,xv)/D2R, r = Math.sqrt(xv*xv + yv*yv);
+  var NR = N*D2R, iR = inc*D2R, vw = (v+w)*D2R;
+  var xh = r*(Math.cos(NR)*Math.cos(vw) - Math.sin(NR)*Math.sin(vw)*Math.cos(iR));
+  var yh = r*(Math.sin(NR)*Math.cos(vw) + Math.cos(NR)*Math.sin(vw)*Math.cos(iR));
+  var xg = xh + s.r*Math.cos(s.lon*D2R), yg = yh + s.r*Math.sin(s.lon*D2R);
+  return norm(Math.atan2(yg,xg)/D2R);
+}
+/* Lahiri ayanamsa (approx., centuries from 1900) */
+function ayanamsa(jd){
+  var t = (jd - 2415020.0)/36525;
+  return 22.460148 + 1.396042*t + 0.000308*t*t;
+}
+/* Tropical ascendant */
+function ascendant(jd, lat, lonEast){
+  var T = (jd - 2451545.0)/36525;
+  var gmst = norm(280.46061837 + 360.98564736629*(jd - 2451545.0) + 0.000387933*T*T);
+  var lst = norm(gmst + lonEast);
+  var eps = 23.4392911 - 0.0130042*T;
+  var a = Math.atan2(Math.cos(lst*D2R), -(Math.sin(lst*D2R)*Math.cos(eps*D2R) + Math.tan(lat*D2R)*Math.sin(eps*D2R)));
+  return norm(a/D2R);
+}
+/* Full sidereal chart for one person */
+function computeChart(dateStr, timeStr, lat, lon, tzMin){
+  var p = dateStr.split("-"), t = timeStr.split(":");
+  var ut = (+t[0]) + (+t[1])/60 - tzMin/60;
+  var jd = toJD(+p[0], +p[1], +p[2], ut);
+  var ay = ayanamsa(jd);
+  var moonSid = norm(moonLon(jd) - ay);
+  var marsSid = norm(marsLon(jd) - ay);
+  var ascSid  = norm(ascendant(jd, lat, lon) - ay);
+  var nak = Math.floor(moonSid/(360/27));
+  return {
+    jd: jd, ayanamsa: ay,
+    moonSid: moonSid, marsSid: marsSid, ascSid: ascSid,
+    moonRashi: Math.floor(moonSid/30),
+    marsRashi: Math.floor(marsSid/30),
+    lagnaRashi: Math.floor(ascSid/30),
+    nakshatra: nak,
+    pada: Math.floor(moonSid/(360/108)) % 4 + 1,
+    degInNak: moonSid - nak*(360/27)
+  };
+}
+
+/* ============ JYOTISH DATA (language-independent) ============ */
+/* varna rank per rashi: 3 Brahmin, 2 Kshatriya, 1 Vaishya, 0 Shudra */
+var VARNA = [2,1,0,3,2,1,0,3,2,1,0,3];
+/* vashya classes: 0 चतुष्पद 1 मानव 2 जलचर 3 वनचर 4 कीट — sub-rashi precision via sidereal longitude */
+function vashyaClass(moonSid){
+  var r = Math.floor(moonSid/30), firstHalf = (moonSid % 30) < 15;
+  if (r===0||r===1) return 0;
+  if (r===2||r===5||r===6||r===10) return 1;
+  if (r===3||r===11) return 2;
+  if (r===4) return 3;
+  if (r===7) return 4;
+  if (r===8) return firstHalf ? 1 : 0;   /* धनु */
+  return firstHalf ? 0 : 2;              /* मकर */
+}
+var VASHYA_SCORE = [
+[2,  1,  1,  0,  1],
+[1,  2,  0.5,0,  1],
+[1,  0.5,2,  1,  1],
+[0,  0,  1,  2,  0],
+[1,  1,  1,  0,  2]];
+/* yoni per nakshatra: 0 अश्व 1 गज 2 मेष 3 सर्प 4 श्वान 5 मार्जार 6 मूषक 7 गौ 8 महिष 9 व्याघ्र 10 मृग 11 वानर 12 नकुल 13 सिंह */
+var YONI = [0,1,2,3,3,4,5,2,5,6,6,7,8,9,8,9,10,10,4,11,12,11,13,0,13,7,1];
+var YONI_SCORE = [
+[4,2,2,3,2,2,2,1,0,1,3,3,2,1],
+[2,4,3,3,2,2,2,2,3,1,2,3,2,0],
+[2,3,4,2,1,2,1,3,3,1,2,0,3,1],
+[3,3,2,4,2,1,1,1,1,2,2,2,0,2],
+[2,2,1,2,4,2,1,2,2,1,0,2,1,1],
+[2,2,2,1,2,4,0,2,2,1,3,3,2,1],
+[2,2,1,1,1,0,4,2,2,2,2,2,1,2],
+[1,2,3,1,2,2,2,4,3,0,3,2,2,1],
+[0,3,3,1,2,2,2,3,4,1,2,2,2,1],
+[1,1,1,2,1,1,2,0,1,4,1,1,2,1],
+[3,2,2,2,0,3,2,3,2,1,4,2,2,1],
+[3,3,0,2,2,3,2,2,2,1,2,4,3,2],
+[2,2,3,0,1,2,1,2,2,2,2,3,4,2],
+[1,0,1,2,1,1,2,1,1,1,1,2,2,4]];
+/* rashi lords: 0 Sun 1 Moon 2 Mars 3 Mercury 4 Jupiter 5 Venus 6 Saturn */
+var LORD = [2,5,3,1,0,3,5,2,4,6,6,4];
+/* natural friendship: F friend, N neutral, E enemy — row's relation to column */
+var REL = [
+["-","F","F","N","F","E","E"],
+["F","-","N","F","N","N","N"],
+["F","F","-","E","F","N","N"],
+["F","E","N","-","N","F","N"],
+["F","F","F","E","-","E","N"],
+["E","E","N","F","N","-","F"],
+["E","E","E","F","N","F","-"]];
+function maitriScore(l1, l2){
+  if (l1 === l2) return 5;
+  var r1 = REL[l1][l2], r2 = REL[l2][l1];
+  if (r1==="F" && r2==="F") return 5;
+  if ((r1==="F"&&r2==="N")||(r1==="N"&&r2==="F")) return 4;
+  if (r1==="N" && r2==="N") return 3;
+  if ((r1==="F"&&r2==="E")||(r1==="E"&&r2==="F")) return 1;
+  if (r1==="E" && r2==="E") return 0;
+  return 0.5; /* one neutral, one enemy */
+}
+/* gana: 0 देव 1 मनुष्य 2 राक्षस */
+var GANA = [0,1,2,1,0,1,0,0,2,2,1,1,0,2,0,2,0,2,2,1,1,0,2,2,1,1,0];
+var GANA_SCORE = [[6,6,1],[5,6,0],[1,0,6]];  /* boy row, girl col */
+/* nadi: 0 आदि 1 मध्य 2 अंत्य */
+var NADI = [0,1,2,2,1,0,0,1,2,2,1,0,0,1,2,2,1,0,0,1,2,2,1,0,0,1,2];
+function taraGood(from, to){
+  var cnt = ((to - from + 27) % 27) + 1;
+  var r = cnt % 9;
+  return !(r===3 || r===5 || r===7);
+}
+
+/* ============ ASHTAKOOT MATCHING (detail strings resolved via current language) ============ */
+function ashtakoot(b, g){
+  var res = { kootas: [], total: 0 }, S = L();
+  function add(i, got, max, detail){
+    res.kootas.push({name:S.kootas[i], desc:S.kdesc[i], got:got, max:max, detail:detail});
+    res.total += got;
+  }
+  var vb = VARNA[b.moonRashi], vg = VARNA[g.moonRashi];
+  add(0, vb >= vg ? 1 : 0, 1, S.varna[vb]+" – "+S.varna[vg]);
+  var wb = vashyaClass(b.moonSid), wg = vashyaClass(g.moonSid);
+  add(1, VASHYA_SCORE[wb][wg], 2, S.vashya[wb]+" – "+S.vashya[wg]);
+  var t1 = taraGood(g.nakshatra, b.nakshatra), t2 = taraGood(b.nakshatra, g.nakshatra);
+  add(2, (t1&&t2)?3:(t1||t2)?1.5:0, 3, (t1&&t2)?S.tara_d[0]:(t1||t2)?S.tara_d[1]:S.tara_d[2]);
+  var yb = YONI[b.nakshatra], yg = YONI[g.nakshatra];
+  add(3, YONI_SCORE[yb][yg], 4, S.yoni[yb]+" – "+S.yoni[yg]);
+  var lb = LORD[b.moonRashi], lg = LORD[g.moonRashi];
+  add(4, maitriScore(lb,lg), 5, S.lord[lb]+" – "+S.lord[lg]);
+  var gb = GANA[b.nakshatra], gg = GANA[g.nakshatra];
+  add(5, GANA_SCORE[gb][gg], 6, S.gana[gb]+" – "+S.gana[gg]);
+  var d1 = ((g.moonRashi - b.moonRashi + 12) % 12) + 1;
+  var d2 = ((b.moonRashi - g.moonRashi + 12) % 12) + 1;
+  var pair = Math.min(d1,d2) + "-" + Math.max(d1,d2);
+  var bhakootDosha = (pair==="2-12" || pair==="5-9" || pair==="6-8");
+  add(6, bhakootDosha?0:7, 7, fmt(S.bhakoot_d,{d1:d1,d2:d2})+(bhakootDosha?S.dosha_suffix:""));
+  var nb = NADI[b.nakshatra], ng = NADI[g.nakshatra];
+  var nadiDosha = (nb === ng);
+  add(7, nadiDosha?0:8, 8, S.nadi[nb]+" – "+S.nadi[ng]+(nadiDosha?S.same_nadi:""));
+
+  res.bhakootDosha = bhakootDosha;
+  res.nadiDosha = nadiDosha;
+  res.nadiCancel = nadiDosha && (
+    (b.moonRashi === g.moonRashi && b.nakshatra !== g.nakshatra) ||
+    (b.nakshatra === g.nakshatra && b.moonRashi !== g.moonRashi) ||
+    (b.nakshatra === g.nakshatra && b.pada !== g.pada));
+  res.bhakootCancel = bhakootDosha && maitriScore(LORD[b.moonRashi], LORD[g.moonRashi]) >= 4;
+  res.ganaScore = GANA_SCORE[gb][gg];
+  res.yoniScore = YONI_SCORE[yb][yg];
+  res.maitri = maitriScore(lb,lg);
+  return res;
+}
+
+/* ============ MANGLIK ============ */
+function manglik(ch){
+  var MANGLIK_HOUSES = [1,4,7,8,12];
+  var hLagna = ((ch.marsRashi - ch.lagnaRashi + 12) % 12) + 1;
+  var hMoon  = ((ch.marsRashi - ch.moonRashi + 12) % 12) + 1;
+  var fromLagna = MANGLIK_HOUSES.indexOf(hLagna) >= 0;
+  var fromMoon  = MANGLIK_HOUSES.indexOf(hMoon) >= 0;
+  var second = (hLagna === 2 || hMoon === 2);  /* दक्षिण भारतीय परंपरा */
+  var ownSign = (ch.marsRashi===0 || ch.marsRashi===7 || ch.marsRashi===9);
+  var key, cls;
+  if (fromLagna && fromMoon){ key = "full"; cls = "bad"; }
+  else if (fromLagna || fromMoon){ key = "partial"; cls = "warn"; }
+  else if (second){ key = "second"; cls = "warn"; }
+  else { key = "none"; cls = "good"; }
+  return { hLagna:hLagna, hMoon:hMoon, fromLagna:fromLagna, fromMoon:fromMoon,
+           isManglik: fromLagna || fromMoon, second:second, ownSign:ownSign, key:key, cls:cls };
+}
+
+/* ============ CITY DATA ============ */
+var CITIES = [
+["Delhi","दिल्ली",28.61,77.21],["New Delhi","नई दिल्ली",28.61,77.21],["Mumbai","मुंबई",19.08,72.88],
+["Kolkata","कोलकाता",22.57,88.36],["Chennai","चेन्नई",13.08,80.27],["Bengaluru","बेंगलुरु",12.97,77.59],
+["Hyderabad","हैदराबाद",17.39,78.49],["Ahmedabad","अहमदाबाद",23.03,72.58],["Pune","पुणे",18.52,73.86],
+["Jaipur","जयपुर",26.91,75.79],["Lucknow","लखनऊ",26.85,80.95],["Kanpur","कानपुर",26.45,80.33],
+["Nagpur","नागपुर",21.15,79.09],["Indore","इंदौर",22.72,75.86],["Bhopal","भोपाल",23.26,77.41],
+["Patna","पटना",25.59,85.14],["Gaya","गया",24.79,85.00],["Muzaffarpur","मुजफ्फरपुर",26.12,85.39],
+["Bhagalpur","भागलपुर",25.25,87.00],["Darbhanga","दरभंगा",26.15,85.90],["Purnia","पूर्णिया",25.78,87.47],
+["Ara","आरा",25.56,84.66],["Chhapra","छपरा",25.78,84.75],["Samastipur","समस्तीपुर",25.86,85.78],
+["Begusarai","बेगूसराय",25.42,86.13],["Sitamarhi","सीतामढ़ी",26.59,85.48],["Motihari","मोतिहारी",26.65,84.92],
+["Bettiah","बेतिया",26.80,84.50],["Siwan","सिवान",26.22,84.36],["Gopalganj","गोपालगंज",26.47,84.44],
+["Hajipur","हाजीपुर",25.69,85.21],["Bihar Sharif","बिहारशरीफ",25.20,85.52],["Munger","मुंगेर",25.38,86.47],
+["Katihar","कटिहार",25.54,87.58],["Saharsa","सहरसा",25.88,86.60],["Madhubani","मधुबनी",26.35,86.08],
+["Buxar","बक्सर",25.56,83.98],["Sasaram","सासाराम",24.95,84.03],["Jehanabad","जहानाबाद",25.21,84.99],
+["Nawada","नवादा",24.88,85.54],["Ranchi","रांची",23.34,85.31],["Jamshedpur","जमशेदपुर",22.80,86.18],
+["Dhanbad","धनबाद",23.80,86.43],["Deoghar","देवघर",24.48,86.70],["Hazaribagh","हजारीबाग",23.99,85.36],
+["Bokaro","बोकारो",23.67,86.15],["Giridih","गिरिडीह",24.18,86.30],["Varanasi","वाराणसी",25.32,82.99],
+["Prayagraj","प्रयागराज",25.44,81.85],["Agra","आगरा",27.18,78.01],["Meerut","मेरठ",28.98,77.71],
+["Gorakhpur","गोरखपुर",26.76,83.37],["Bareilly","बरेली",28.37,79.43],["Aligarh","अलीगढ़",27.90,78.08],
+["Moradabad","मुरादाबाद",28.84,78.78],["Noida","नोएडा",28.54,77.39],["Ghaziabad","गाजियाबाद",28.67,77.42],
+["Faridabad","फरीदाबाद",28.41,77.31],["Gurugram","गुरुग्राम",28.46,77.03],["Jhansi","झांसी",25.45,78.57],
+["Mathura","मथुरा",27.49,77.67],["Ayodhya","अयोध्या",26.80,82.20],["Azamgarh","आजमगढ़",26.07,83.18],
+["Ballia","बलिया",25.76,84.15],["Deoria","देवरिया",26.50,83.78],["Basti","बस्ती",26.79,82.73],
+["Sultanpur","सुल्तानपुर",26.26,82.07],["Chandigarh","चंडीगढ़",30.73,76.78],["Ludhiana","लुधियाना",30.90,75.86],
+["Amritsar","अमृतसर",31.63,74.87],["Jalandhar","जालंधर",31.33,75.58],["Dehradun","देहरादून",30.32,78.03],
+["Haridwar","हरिद्वार",29.95,78.16],["Shimla","शिमला",31.10,77.17],["Jammu","जम्मू",32.73,74.87],
+["Srinagar","श्रीनगर",34.08,74.80],["Surat","सूरत",21.17,72.83],["Vadodara","वडोदरा",22.31,73.18],
+["Rajkot","राजकोट",22.30,70.80],["Nashik","नासिक",20.00,73.79],["Chhatrapati Sambhajinagar","संभाजीनगर (औरंगाबाद)",19.88,75.34],
+["Solapur","सोलापुर",17.66,75.91],["Kolhapur","कोल्हापुर",16.70,74.24],["Amravati","अमरावती",20.93,77.75],
+["Akola","अकोला",20.70,77.00],["Nanded","नांदेड़",19.15,77.30],["Latur","लातूर",18.40,76.57],
+["Raipur","रायपुर",21.25,81.63],["Bilaspur","बिलासपुर",22.08,82.15],["Bhubaneswar","भुवनेश्वर",20.30,85.82],
+["Cuttack","कटक",20.46,85.88],["Guwahati","गुवाहाटी",26.14,91.74],["Siliguri","सिलीगुड़ी",26.73,88.39],
+["Asansol","आसनसोल",23.68,86.99],["Durgapur","दुर्गापुर",23.55,87.29],["Howrah","हावड़ा",22.59,88.26],
+["Visakhapatnam","विशाखापत्तनम",17.69,83.22],["Vijayawada","विजयवाड़ा",16.51,80.65],["Guntur","गुंटूर",16.31,80.44],
+["Warangal","वारंगल",17.98,79.60],["Coimbatore","कोयंबटूर",11.02,76.96],["Madurai","मदुरै",9.93,78.12],
+["Tiruchirappalli","तिरुचिरापल्ली",10.79,78.70],["Salem","सेलम",11.66,78.15],["Kochi","कोच्चि",9.93,76.27],
+["Thiruvananthapuram","तिरुवनंतपुरम",8.52,76.94],["Kozhikode","कोझिकोड",11.26,75.78],["Thrissur","त्रिशूर",10.53,76.21],
+["Mysuru","मैसूर",12.30,76.64],["Mangaluru","मंगलुरु",12.91,74.86],["Hubballi","हुबली",15.36,75.12],
+["Belagavi","बेलगावी",15.85,74.50],["Jodhpur","जोधपुर",26.24,73.02],["Udaipur","उदयपुर",24.59,73.71],
+["Kota","कोटा",25.21,75.86],["Ajmer","अजमेर",26.45,74.64],["Bikaner","बीकानेर",28.02,73.31],
+["Alwar","अलवर",27.55,76.63],["Gwalior","ग्वालियर",26.22,78.18],["Jabalpur","जबलपुर",23.17,79.94],
+["Ujjain","उज्जैन",23.18,75.78],["Rewa","रीवा",24.53,81.30],["Satna","सतना",24.60,80.83],
+["Katni","कटनी",23.83,80.39],["Sagar","सागर",23.84,78.74]
+];
+function findCity(q){
+  if (!q) return null;
+  q = q.trim().toLowerCase();
+  for (var i=0;i<CITIES.length;i++){
+    if (CITIES[i][0].toLowerCase() === q || CITIES[i][1] === q) return CITIES[i];
+  }
+  for (var j=0;j<CITIES.length;j++){
+    if (CITIES[j][0].toLowerCase().indexOf(q) === 0 || CITIES[j][1].indexOf(q) === 0) return CITIES[j];
+  }
+  return null;
+}
+
+/* ============ UI ============ */
+function $(id){ return document.getElementById(id); }
+function fmtDeg(x){ var d = Math.floor(x), m = Math.round((x-d)*60); if(m===60){d++;m=0;} return d + "°" + (m<10?"0":"") + m + "′"; }
+
+/* time options are static HTML now (works even where scripts are blocked, e.g. iPhone file preview) */
+function to24(h12, ap){ h12 = +h12; return (ap === "PM") ? (h12 % 12) + 12 : (h12 % 12); }
+
+/* custom city autocomplete — works on all mobile browsers, unlike <datalist> */
+function attachSuggest(id){
+  var inp = $(id);
+  var box = document.createElement("div");
+  box.className = "suggest"; box.style.display = "none";
+  inp.parentNode.appendChild(box);
+  function hide(){ box.style.display = "none"; }
+  function matches(q){
+    var ql = q.toLowerCase(), out = [], i, c;
+    for (i=0; i<CITIES.length && out.length<8; i++){
+      c = CITIES[i];
+      if (c[0].toLowerCase().indexOf(ql) === 0 || c[1].indexOf(q) === 0) out.push(c);
+    }
+    if (!out.length){
+      for (i=0; i<CITIES.length && out.length<8; i++){
+        c = CITIES[i];
+        if (c[0].toLowerCase().indexOf(ql) > 0 || c[1].indexOf(q) > 0) out.push(c);
+      }
+    }
+    return out;
+  }
+  inp.addEventListener("input", function(){
+    var q = inp.value.trim();
+    if (!q){ hide(); return; }
+    var out = matches(q);
+    if (!out.length){ hide(); return; }
+    box.innerHTML = "";
+    out.forEach(function(c){
+      var d = document.createElement("div");
+      d.textContent = c[0];
+      var sm = document.createElement("small"); sm.textContent = c[1]; d.appendChild(sm);
+      function pick(ev){ ev.preventDefault(); inp.value = c[0]; hide(); }
+      d.addEventListener("pointerdown", pick);
+      d.addEventListener("mousedown", pick);
+      box.appendChild(d);
+    });
+    box.style.display = "block";
+  });
+  inp.addEventListener("blur", function(){ setTimeout(hide, 250); });
+}
+attachSuggest("b_city");
+attachSuggest("g_city");
+
+function applyStatic(){
+  var S = L();
+  document.documentElement.lang = (LANG === "hi") ? "hi" : "en";
+  document.title = S.doc_title;
+  var els = document.querySelectorAll("[data-i18n]");
+  for (var i=0;i<els.length;i++){
+    var k = els[i].getAttribute("data-i18n");
+    if (S[k] != null) els[i].textContent = S[k];
+  }
+  var phs = document.querySelectorAll("[data-i18n-ph]");
+  for (var j=0;j<phs.length;j++){
+    var k2 = phs[j].getAttribute("data-i18n-ph");
+    if (S[k2] != null) phs[j].placeholder = S[k2];
+  }
+  $("langBtn").textContent = (LANG === "hi") ? "🌐 English" : "🌐 हिंदी";
+}
+
+function readPerson(prefix){
+  var S = L();
+  var who = (prefix === "b") ? S.who_boy : S.who_girl;
+  var date = $(prefix+"_date").value, city = $(prefix+"_city").value;
+  var hh = $(prefix+"_hh").value, mm = $(prefix+"_mm").value, ap = $(prefix+"_ap").value;
+  var mlat = parseFloat($(prefix+"_lat").value), mlon = parseFloat($(prefix+"_lon").value);
+  var tz = parseInt($(prefix+"_tz").value, 10);
+  if (!date) throw fmt(S.err_date, {who:who});
+  if (hh === "" || mm === "") throw fmt(S.err_time, {who:who});
+  var h24 = to24(hh, ap);
+  var time = (h24<10?"0":"") + h24 + ":" + mm;
+  var lat, lon;
+  if (!isNaN(mlat) && !isNaN(mlon)){ lat = mlat; lon = mlon; }
+  else {
+    var c = findCity(city);
+    if (!c){
+      $(prefix+"_manualbox").open = true;
+      throw fmt(S.err_place, {who:who});
+    }
+    lat = c[2]; lon = c[3];
+  }
+  return {
+    name: $(prefix+"_name").value.trim() || (prefix==="b" ? S.def_boy : S.def_girl),
+    date: date, time: time, city: city,
+    approx: $(prefix+"_approx").checked,
+    chart: computeChart(date, time, lat, lon, tz)
+  };
+}
+
+function verdictOf(total, ak, mB, mG){
+  var manglikOk = (mB.isManglik === mG.isManglik);
+  if (total < 18) return { key:"notrec", cls:"bad" };
+  var doshas = (ak.nadiDosha && !ak.nadiCancel) || (ak.bhakootDosha && !ak.bhakootCancel) || !manglikOk;
+  if (doshas) return { key:"dosha", cls:"warn" };
+  if (total >= 32) return { key:"excellent", cls:"good" };
+  if (total >= 25) return { key:"verygood", cls:"good" };
+  return { key:"average", cls:"warn" };
+}
+
+var lastMatch = null;
+
+function calculate(){
+  var err = $("errbox"); err.style.display = "none";
+  var boy, girl;
+  try {
+    boy = readPerson("b");
+    girl = readPerson("g");
+  } catch(e){ err.textContent = "⚠ " + e; err.style.display = "block"; err.scrollIntoView({behavior:"smooth",block:"center"}); return; }
+
+  var ak = ashtakoot(boy.chart, girl.chart);
+  var mB = manglik(boy.chart), mG = manglik(girl.chart);
+  var v = verdictOf(ak.total, ak, mB, mG);
+  lastMatch = { boy:boy, girl:girl, ak:ak, mB:mB, mG:mG, v:v };
+  try { localStorage.setItem("kundliBoy", JSON.stringify({
+    name:$("b_name").value, date:$("b_date").value,
+    hh:$("b_hh").value, mm:$("b_mm").value, ap:$("b_ap").value, city:$("b_city").value,
+    lat:$("b_lat").value, lon:$("b_lon").value, tz:$("b_tz").value, approx:$("b_approx").checked })); } catch(e){}
+  renderResult();
+  $("result").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+/* rebuild language-dependent parts of an existing match */
+function rebuildMatch(){
+  var m = lastMatch;
+  m.ak = ashtakoot(m.boy.chart, m.girl.chart);
+  m.mB = manglik(m.boy.chart);
+  m.mG = manglik(m.girl.chart);
+  m.v  = verdictOf(m.ak.total, m.ak, m.mB, m.mG);
+  renderResult();
+}
+
+function bigRashi(i){ return (LANG === "hi") ? L().rashi[i] + L().rashi_word : L().rashi[i]; }
+
+function renderResult(){
+  var m = lastMatch, ak = m.ak, b = m.boy, g = m.girl, S = L();
+  var pct = ak.total/36;
+  var dialColor = m.v.cls==="good" ? "var(--good)" : m.v.cls==="warn" ? "var(--warn)" : "var(--bad)";
+  var C = 2*Math.PI*54;
+  var kootRows = "";
+  for (var i=0;i<ak.kootas.length;i++){
+    var k = ak.kootas[i];
+    kootRows += '<tr><td><span class="kname">'+k.name+'</span><span class="kdesc">'+k.desc+' • '+k.detail+'</span></td>'
+      + '<td class="pts'+(k.got===0?' z':'')+'">'+k.got+' / '+k.max+'</td></tr>';
+  }
+  /* issues */
+  var issues = [];
+  if (ak.nadiDosha){
+    issues.push({cls: ak.nadiCancel?"warn":"bad", t: fmt(S.iss_nadi_t,{n:S.nadi[NADI[b.chart.nakshatra]]}),
+      s: ak.nadiCancel ? S.iss_nadi_c : S.iss_nadi_s});
+  }
+  if (ak.bhakootDosha){
+    issues.push({cls: ak.bhakootCancel?"warn":"bad", t:S.iss_bhk_t, s: ak.bhakootCancel ? S.iss_bhk_c : S.iss_bhk_s});
+  }
+  if (ak.ganaScore <= 1) issues.push({cls:"warn", t:S.iss_gana_t, s:S.iss_gana_s});
+  if (ak.yoniScore <= 1) issues.push({cls:"warn", t:fmt(S.iss_yoni_t,{s:ak.yoniScore}), s:S.iss_yoni_s});
+  if (ak.maitri <= 1) issues.push({cls:"warn", t:fmt(S.iss_mtr_t,{s:ak.maitri}), s:S.iss_mtr_s});
+  var manglikMismatch = m.mB.isManglik !== m.mG.isManglik;
+  if (manglikMismatch){
+    issues.push({cls:"bad", t:S.iss_mm_t, s:S.iss_mm_s});
+  } else if (m.mB.isManglik && m.mG.isManglik){
+    issues.push({cls:"good", t:S.iss_both_t, s:S.iss_both_s});
+  }
+  if (!issues.length) issues.push({cls:"good", t:S.iss_none_t, s:S.iss_none_s});
+  var issueHtml = "";
+  for (var q=0;q<issues.length;q++) issueHtml += '<li class="'+issues[q].cls+'"><b>'+issues[q].t+'</b><small>'+issues[q].s+'</small></li>';
+
+  var approxNote = (b.approx || g.approx) ? '<p class="note">'+S.note_approx+'</p>' : "";
+  var boundaryNote = "";
+  if (g.chart.degInNak < 0.25 || g.chart.degInNak > (360/27 - 0.25) || b.chart.degInNak < 0.25 || b.chart.degInNak > (360/27 - 0.25)){
+    boundaryNote = '<p class="note">'+S.note_boundary+'</p>';
+  }
+
+  function moonExtra(p){
+    var head = (LANG === "hi")
+      ? S.lbl_moon+" "+WESTERN[p.chart.moonRashi]+" "+fmtDeg(p.chart.moonSid % 30)
+      : S.lbl_moon+" "+fmtDeg(p.chart.moonSid % 30);
+    return head
+      + " • "+S.lbl_gana+": "+S.gana[GANA[p.chart.nakshatra]]
+      + " • "+S.lbl_nadi+": "+S.nadi[NADI[p.chart.nakshatra]]
+      + " • "+S.lbl_lagna+": "+S.rashi[p.chart.lagnaRashi];
+  }
+  function manglikCard(who, p, mm){
+    var d = fmt(S.m_detail, {r:S.rashi[p.chart.marsRashi], h1:mm.hLagna, h2:mm.hMoon});
+    if (mm.ownSign && mm.isManglik) d += S.m_own;
+    if (mm.key === "second") d += S.m_second;
+    return '<div class="pcard"><div class="who">'+who+'</div>'
+      + '<span class="statuschip '+mm.cls+'">'+S.mstatus[mm.key]+'</span>'
+      + '<div class="extra">'+d+'</div></div>';
+  }
+
+  var html =
+  '<section class="card"><h2>'+S.h_result+b.name+' ♥ '+g.name+'</h2>'
+  + '<div class="scorewrap">'
+  + '<svg class="dial" viewBox="0 0 132 132" role="img" aria-label="'+ak.total+' / 36">'
+  + '<circle cx="66" cy="66" r="54" fill="none" stroke="var(--line)" stroke-width="11"/>'
+  + '<circle cx="66" cy="66" r="54" fill="none" stroke="'+dialColor+'" stroke-width="11" stroke-linecap="round" '
+  + 'stroke-dasharray="'+(C*pct).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 66 66)"/>'
+  + '<text x="66" y="63" text-anchor="middle" font-size="30" font-weight="700">'+ak.total+'</text>'
+  + '<text x="66" y="86" text-anchor="middle" font-size="13" fill="var(--muted)">'+S.dial_sub+'</text></svg>'
+  + '<div class="scoremeta"><div class="verdict '+m.v.cls+'">'+S.verdicts[m.v.key]+'</div>'
+  + '<div class="sub">'+S.scale+'</div></div></div>'
+  + '</section>'
+
+  + '<section class="card"><h2>'+S.h_rashi+'</h2><div class="pair">'
+  + '<div class="pcard"><div class="who">'+S.card_girl+g.name+'</div><div class="rashi">'+bigRashi(g.chart.moonRashi)+'</div>'
+  + '<div class="nak">'+fmt(S.nak_line,{n:S.nak[g.chart.nakshatra], p:g.chart.pada})+'</div>'
+  + '<div class="extra">'+moonExtra(g)+'</div></div>'
+  + '<div class="pcard"><div class="who">'+S.card_boy+b.name+'</div><div class="rashi">'+bigRashi(b.chart.moonRashi)+'</div>'
+  + '<div class="nak">'+fmt(S.nak_line,{n:S.nak[b.chart.nakshatra], p:b.chart.pada})+'</div>'
+  + '<div class="extra">'+moonExtra(b)+'</div></div>'
+  + '</div>'+ boundaryNote +'</section>'
+
+  + '<section class="card"><h2>'+S.h_manglik+'</h2><div class="pair">'
+  + manglikCard(S.card_girl+g.name, g, m.mG)
+  + manglikCard(S.card_boy+b.name, b, m.mB)
+  + '</div>'+ approxNote +'</section>'
+
+  + '<section class="card"><h2>'+S.h_koota+'</h2>'
+  + '<div style="overflow-x:auto"><table class="koota"><tr><th>'+S.th_koota+'</th><th style="text-align:right">'+S.th_points+'</th></tr>'
+  + kootRows
+  + '<tr><td class="kname" style="font-weight:700">'+S.total+'</td><td class="pts">'+ak.total+' / 36</td></tr></table></div></section>'
+
+  + '<section class="card"><h2>'+S.h_issues+'</h2><ul class="issues">'+issueHtml+'</ul></section>'
+
+  + '<div class="btnrow">'
+  + '<button class="btn secondary" id="saveBtn">'+S.btn_save+'</button>'
+  + '<button class="btn secondary" id="shareBtn">'+S.btn_share+'</button></div>';
+
+  $("result").innerHTML = html;
+  $("saveBtn").onclick = saveMatch;
+  $("shareBtn").onclick = shareMatch;
+}
+
+function summaryText(){
+  var m = lastMatch, g = m.girl, b = m.boy, S = L();
+  return S.share_title+": "+b.name+" ♥ "+g.name
+    + "\n"+S.share_gun+": "+m.ak.total+"/36 — "+S.verdicts[m.v.key]
+    + "\n"+S.card_girl+bigRashi(g.chart.moonRashi)+", "+S.nak[g.chart.nakshatra]+" — "+S.mstatus[m.mG.key]
+    + "\n"+S.card_boy+bigRashi(b.chart.moonRashi)+", "+S.nak[b.chart.nakshatra]+" — "+S.mstatus[m.mB.key]
+    + (m.ak.nadiDosha ? "\n"+S.share_nadi+(m.ak.nadiCancel?S.share_parihar:"") : "")
+    + (m.ak.bhakootDosha ? "\n"+S.share_bhk+(m.ak.bhakootCancel?S.share_parihar:"") : "");
+}
+function shareMatch(){
+  if (!lastMatch) return;
+  var text = summaryText();
+  if (navigator.share){ navigator.share({title:L().share_title, text:text}).catch(function(){}); }
+  else if (navigator.clipboard){ navigator.clipboard.writeText(text); alert(L().copied); }
+}
+function loadSaved(){
+  try { return JSON.parse(localStorage.getItem("kundliMatches") || "[]"); } catch(e){ return []; }
+}
+function saveMatch(){
+  if (!lastMatch) return;
+  var list = loadSaved();
+  var m = lastMatch;
+  list.push({ girl: m.girl.name, dob: m.girl.date, total: m.ak.total,
+    rashiIdx: m.girl.chart.moonRashi, nakIdx: m.girl.chart.nakshatra,
+    mKey: m.mG.key, vKey: m.v.key, cls: m.v.cls, when: new Date().toISOString().slice(0,10) });
+  try { localStorage.setItem("kundliMatches", JSON.stringify(list)); } catch(e){}
+  renderSaved();
+  $("savedCard").scrollIntoView({behavior:"smooth"});
+}
+function renderSaved(){
+  var list = loadSaved(), S = L();
+  var cardEl = $("savedCard");
+  if (!list.length){ cardEl.style.display = "none"; return; }
+  cardEl.style.display = "";
+  list.sort(function(a,b){ return b.total - a.total; });
+  var html = '<tr><th>'+S.th_girl+'</th><th>'+S.th_points+'</th><th>'+S.th_rashi+'</th><th>'+S.th_manglik+'</th><th></th></tr>';
+  for (var i=0;i<list.length;i++){
+    var s = list[i];
+    var rashi = (s.rashiIdx != null) ? S.rashi[s.rashiIdx] : (s.rashi || "");
+    var nak = (s.nakIdx != null) ? S.nak[s.nakIdx] : (s.nak || "");
+    var mstat = s.mKey ? S.mstatus[s.mKey] : (s.manglik || "");
+    html += '<tr><td>'+s.girl+'<br><small style="color:var(--muted)">'+s.dob+'</small></td>'
+      + '<td class="g" style="color:var(--'+(s.cls==="good"?"good":s.cls==="warn"?"warn":"bad")+')">'+s.total+'/36</td>'
+      + '<td>'+rashi+'<br><small style="color:var(--muted)">'+nak+'</small></td>'
+      + '<td>'+mstat+'</td>'
+      + '<td><button data-i="'+i+'" aria-label="✕">✕</button></td></tr>';
+  }
+  $("savedTable").innerHTML = html;
+  var btns = $("savedTable").getElementsByTagName("button");
+  for (var j=0;j<btns.length;j++){
+    btns[j].onclick = function(){
+      var list2 = loadSaved();
+      list2.sort(function(a,b){ return b.total - a.total; });
+      list2.splice(+this.getAttribute("data-i"), 1);
+      try { localStorage.setItem("kundliMatches", JSON.stringify(list2)); } catch(e){}
+      renderSaved();
+    };
+  }
+}
+function clearGirl(){
+  ["g_name","g_date","g_hh","g_mm","g_city","g_lat","g_lon"].forEach(function(id){ $(id).value = ""; });
+  $("g_ap").value = "AM";
+  $("g_approx").checked = false;
+  $("result").innerHTML = "";
+  lastMatch = null;
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+(function restoreBoy(){
+  try {
+    var s = JSON.parse(localStorage.getItem("kundliBoy") || "null");
+    if (!s) return;
+    $("b_name").value = s.name||""; $("b_date").value = s.date||"";
+    if (s.hh){ $("b_hh").value = s.hh; $("b_mm").value = s.mm||"00"; $("b_ap").value = s.ap||"AM"; }
+    else if (s.time){ /* migrate old 24h "HH:MM" format */
+      var tp = s.time.split(":"), H = +tp[0], h12 = H % 12; if (h12 === 0) h12 = 12;
+      $("b_hh").value = String(h12); $("b_mm").value = tp[1]||"00"; $("b_ap").value = (H >= 12) ? "PM" : "AM";
+    }
+    $("b_city").value = s.city||""; $("b_lat").value = s.lat||""; $("b_lon").value = s.lon||"";
+    if (s.tz) $("b_tz").value = s.tz;
+    $("b_approx").checked = !!s.approx;
+  } catch(e){}
+})();
+$("calcBtn").onclick = calculate;
+$("newGirlBtn").onclick = clearGirl;
+$("langBtn").onclick = function(){
+  LANG = (LANG === "hi") ? "en" : "hi";
+  try { localStorage.setItem("kundliLang", LANG); } catch(e){}
+  applyStatic();
+  if (lastMatch) rebuildMatch();
+  renderSaved();
+};
+applyStatic();
+renderSaved();
+
+/* ============ SELF-TESTS (?test=1) ============ */
+function runTests(){
+  var out = [];
+  function T(name, ok, detail){ out.push((ok?"PASS":"FAIL")+"  "+name+(detail?"  ["+detail+"]":"")); }
+  /* 1. Solar eclipse 2024-04-08 18:18 UT: Moon conjunct Sun */
+  var j1 = toJD(2024,4,8,18.3);
+  var dMS = Math.abs(norm(moonLon(j1) - sunLon(j1) + 180) - 180);
+  T("Eclipse 2024: Moon-Sun conjunction", dMS < 0.6, "diff="+dMS.toFixed(3)+"°, sun="+sunLon(j1).toFixed(2));
+  /* 2. Mars opposition 2025-01-16: Mars = Sun + 180 */
+  var j2 = toJD(2025,1,16,3.0);
+  var dOpp = Math.abs(norm(marsLon(j2) - sunLon(j2)) - 180);
+  T("Mars opposition 2025-01-16", dOpp < 1.5, "diff from 180 = "+dOpp.toFixed(2)+"°, mars="+marsLon(j2).toFixed(2));
+  /* 3. India independence chart: Moon Cancer/Pushya, Lagna Taurus */
+  var ind = computeChart("1947-08-15","00:00",28.61,77.21,330);
+  T("India 1947: Moon rashi = Cancer", ind.moonRashi === 3, "got "+TXT.en.rashi[ind.moonRashi]+" "+ind.moonSid.toFixed(2));
+  T("India 1947: Nakshatra = Pushya", ind.nakshatra === 7, "got "+TXT.en.nak[ind.nakshatra]);
+  T("India 1947: Lagna = Taurus", ind.lagnaRashi === 1, "got "+TXT.en.rashi[ind.lagnaRashi]+" asc="+ind.ascSid.toFixed(2));
+  /* 4. Ayanamsa 2024 approx 24.1-24.3 */
+  var ay = ayanamsa(toJD(2024,1,1,0));
+  T("Lahiri ayanamsa 2024 ~24.2", ay > 24.0 && ay < 24.35, ay.toFixed(3));
+  /* 5. Sunrise ascendant ~ Sun longitude (Delhi 2024-01-01 07:14 IST) */
+  var j5 = toJD(2024,1,1,7.233 - 5.5);
+  var dAsc = Math.abs(norm(ascendant(j5,28.61,77.21) - sunLon(j5) + 180) - 180);
+  T("Sunrise: Asc = Sun lon", dAsc < 3.5, "diff="+dAsc.toFixed(2)+"°");
+  /* 6. Identical charts: koota fixed values */
+  var c = computeChart("1995-06-15","10:30",25.59,85.14,330);
+  var ak = ashtakoot(c, c);
+  T("Identical: total=28", ak.total === 28, "got "+ak.total);
+  var expect = [1,2,3,4,5,6,7,0];
+  var okAll = true, det = [];
+  for (var i=0;i<8;i++){ det.push(ak.kootas[i].name+"="+ak.kootas[i].got); if (ak.kootas[i].got !== expect[i]) okAll = false; }
+  T("Identical: per-koota values", okAll, det.join(", "));
+  T("Identical: nadi dosha flagged", ak.nadiDosha === true, "");
+  /* 7. Manglik house arithmetic */
+  var fake = { marsRashi: 0, lagnaRashi: 0, moonRashi: 6 };
+  var mm = manglik(fake);
+  T("Manglik: Mars in lagna => manglik", mm.fromLagna === true && mm.hLagna === 1, "hL="+mm.hLagna+" hM="+mm.hMoon);
+  T("Manglik: 7th from moon => manglik", mm.fromMoon === true && mm.hMoon === 7, "");
+  /* 8. Bhakoot 6-8 dosha */
+  var b8 = { moonSid:5, moonRashi:0, nakshatra:0, pada:1 }, g8 = { moonSid:155, moonRashi:5, nakshatra:12, pada:1 };
+  var ak8 = ashtakoot(b8, g8);
+  T("Bhakoot 6-8 dosha => 0", ak8.kootas[6].got === 0, ak8.kootas[6].detail);
+  /* 9. 12h -> 24h conversion */
+  T("Time: 12 AM = 00h", to24(12,"AM") === 0, "");
+  T("Time: 12 PM = 12h", to24(12,"PM") === 12, "");
+  T("Time: 9 PM = 21h", to24(9,"PM") === 21, "");
+  T("Time: 8 AM = 8h", to24(8,"AM") === 8, "");
+  /* 10. city lookup incl. Hindi */
+  T("City: Patna found", findCity("Patna") !== null && findCity("Patna")[2] === 25.59, "");
+  T("City: Hindi पटना found", findCity("पटना") !== null, "");
+  /* 11. i18n: both language packs cover the same keys */
+  var missing = [];
+  for (var kk in TXT.hi){ if (!(kk in TXT.en)) missing.push("en:"+kk); }
+  for (var kk2 in TXT.en){ if (!(kk2 in TXT.hi)) missing.push("hi:"+kk2); }
+  T("i18n: hi/en key parity", missing.length === 0, missing.join(",") || "all keys present");
+  document.getElementById("app").innerHTML = '<pre id="testout">'+out.join("\n")+'</pre>';
+}
+if (location.search.indexOf("test=1") >= 0) runTests();
+</script>
+<!-- ARTIFACT-END -->
+</body>
+</html>
