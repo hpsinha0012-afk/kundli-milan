@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hammer Candle Screener — NSE Intraday</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel2: #1c2330;
+    --border: #2d333b;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #f0b429;
+    --green: #26a269;
+    --green-bright: #3fb950;
+    --red: #e5534b;
+    --blue: #4493f8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+  header {
+    background: linear-gradient(135deg, #161b22 0%, #1a2230 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    width: 40px; height: 40px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  header h1 { font-size: 19px; font-weight: 600; }
+  header .sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .mkt-badge {
+    margin-left: auto;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: var(--muted);
+    display: flex; align-items: center; gap: 7px;
+    white-space: nowrap;
+  }
+  .mkt-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+  .mkt-badge.open { color: var(--green-bright); border-color: rgba(63,185,80,.4); }
+  .mkt-badge.open .dot { background: var(--green-bright); box-shadow: 0 0 6px var(--green-bright); }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 24px; }
+
+  .controls {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+  }
+  .ctl-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end; }
+  .ctl-row + .ctl-row { margin-top: 12px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  select, input[type="number"], input[type="text"] {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-size: 13.5px;
+    min-width: 90px;
+  }
+  input[type="number"] { width: 96px; }
+  select:focus, input:focus { outline: none; border-color: var(--accent); }
+  .chk { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text); padding: 8px 0; cursor: pointer; user-select: none; }
+  .chk input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+
+  #scanBtn {
+    background: var(--accent);
+    color: #1a1a1a;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 26px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform .1s, opacity .15s;
+  }
+  #scanBtn:hover { opacity: .9; }
+  #scanBtn:active { transform: scale(.97); }
+  #scanBtn:disabled { opacity: .5; cursor: not-allowed; }
+
+  details.adv { margin-top: 14px; border-top: 1px dashed var(--border); padding-top: 12px; }
+  details.adv summary { cursor: pointer; font-size: 12.5px; color: var(--blue); user-select: none; }
+  details.adv[open] summary { margin-bottom: 12px; }
+
+  .progress-wrap { display: none; margin-bottom: 18px; }
+  .progress-wrap.active { display: block; }
+  .progress-label { font-size: 12.5px; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 6px; background: var(--panel2); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; background: var(--accent); border-radius: 3px; transition: width .2s; }
+
+  .summary-cards { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    min-width: 130px;
+    flex: 1;
+  }
+  .card .k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .card .v { font-size: 21px; font-weight: 700; margin-top: 3px; }
+  .card .v.accent { color: var(--accent); }
+  .card .v.green { color: var(--green-bright); }
+
+  .tbl-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 900px; }
+  thead th {
+    text-align: left;
+    padding: 11px 14px;
+    font-size: 11.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  thead th:hover { color: var(--text); }
+  thead th .arrow { font-size: 10px; margin-left: 3px; }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid rgba(45,51,59,.55); white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(240,180,41,.045); }
+  .sym { font-weight: 700; color: var(--text); }
+  .name { font-size: 11.5px; color: var(--muted); max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
+  .up { color: var(--green-bright); }
+  .dn { color: var(--red); }
+  .ratio-pill {
+    display: inline-block;
+    background: rgba(240,180,41,.12);
+    color: var(--accent);
+    border: 1px solid rgba(240,180,41,.3);
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .links a { color: var(--blue); text-decoration: none; font-size: 12.5px; margin-right: 10px; }
+  .links a:hover { text-decoration: underline; }
+  .empty {
+    padding: 46px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .empty .big { font-size: 34px; margin-bottom: 10px; }
+
+  .errbox {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .errbox summary { cursor: pointer; color: var(--red); opacity: .8; }
+
+  footer {
+    max-width: 1200px;
+    margin: 26px auto 0;
+    padding: 0 24px;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  @media (max-width: 640px) {
+    .wrap, header { padding-left: 14px; padding-right: 14px; }
+    .mkt-badge { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg width="22" height="26" viewBox="0 0 22 26">
+      <rect x="8" y="1" width="6" height="8" rx="1" fill="#3fb950"/>
+      <line x1="11" y1="9" x2="11" y2="25" stroke="#3fb950" stroke-width="2"/>
+    </svg>
+  </div>
+  <div>
+    <h1>Hammer Candle Screener</h1>
+    <div class="sub">NSE intraday · hammer pattern on 15-minute candles · Yahoo Finance data</div>
+  </div>
+  <div class="mkt-badge" id="mktBadge"><span class="dot"></span><span id="mktText">Checking market…</span></div>
+</header>
+
+<div class="wrap">
+
+  <div class="controls">
+    <div class="ctl-row">
+      <div class="field">
+        <label>Universe</label>
+        <select id="universe">
+          <option value="nifty50">Nifty 50 (~50)</option>
+          <option value="nifty100">Nifty 100 (~100)</option>
+          <option value="extended" selected>Extended liquid (~200)</option>
+          <option value="custom">Custom list…</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Timeframe</label>
+        <select id="interval">
+          <option value="5m">5 min</option>
+          <option value="15m" selected>15 min</option>
+          <option value="30m">30 min</option>
+          <option value="60m">60 min</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Pattern</label>
+        <select id="pattern">
+          <option value="hammer" selected>Hammer (long lower wick)</option>
+          <option value="inverted">Inverted hammer (long upper wick)</option>
+          <option value="both">Both</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Look back candles</label>
+        <select id="lookback">
+          <option value="1" selected>Latest only</option>
+          <option value="2">Last 2</option>
+          <option value="3">Last 3</option>
+          <option value="5">Last 5</option>
+        </select>
+      </div>
+      <button id="scanBtn">▶ Run Scan</button>
+      <label class="chk" style="margin-left:4px;">
+        <input type="checkbox" id="autoRefresh"> Auto re-scan every 5 min
+      </label>
+    </div>
+
+    <div class="ctl-row" id="customRow" style="display:none;">
+      <div class="field" style="flex:1;">
+        <label>Custom NSE symbols (comma separated, e.g. RELIANCE, TCS, SBIN)</label>
+        <input type="text" id="customSyms" placeholder="RELIANCE, TCS, SBIN, INFY" style="width:100%;">
+      </div>
+    </div>
+
+    <details class="adv">
+      <summary>Pattern rules &amp; filters (defaults match the classic Chartink hammer scan)</summary>
+      <div class="ctl-row">
+        <div class="field">
+          <label>Wick ≥ body ×</label>
+          <input type="number" id="wickRatio" value="2" min="1" step="0.5">
+        </div>
+        <div class="field">
+          <label>Max body (% of range)</label>
+          <input type="number" id="maxBodyPct" value="35" min="5" max="100" step="5">
+        </div>
+        <div class="field">
+          <label>Max opposite wick (% of range)</label>
+          <input type="number" id="maxOppWickPct" value="15" min="0" max="50" step="5">
+        </div>
+        <div class="field">
+          <label>Min price ₹</label>
+          <input type="number" id="minPrice" value="20" min="0">
+        </div>
+        <div class="field">
+          <label>Max price ₹</label>
+          <input type="number" id="maxPrice" value="100000" min="0">
+        </div>
+        <div class="field">
+          <label>Min candle volume</label>
+          <input type="number" id="minVol" value="10000" min="0" step="5000">
+        </div>
+        <label class="chk"><input type="checkbox" id="bullishOnly"> Green candles only (close &gt; open)</label>
+        <label class="chk"><input type="checkbox" id="includeForming"> Include forming (live) candle</label>
+      </div>
+    </details>
+  </div>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-label"><span id="progText">Scanning…</span><span id="progPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+
+  <div class="summary-cards" id="summaryCards" style="display:none;">
+    <div class="card"><div class="k">Stocks scanned</div><div class="v" id="cScanned">–</div></div>
+    <div class="card"><div class="k">Matches found</div><div class="v accent" id="cMatches">–</div></div>
+    <div class="card"><div class="k">Timeframe</div><div class="v" id="cTf">–</div></div>
+    <div class="card"><div class="k">Last scan (IST)</div><div class="v" id="cTime" style="font-size:16px;">–</div></div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table id="resultTable" style="display:none;">
+      <thead>
+        <tr>
+          <th data-sort="symbol">Stock</th>
+          <th>Candle</th>
+          <th data-sort="candleTime">Time (IST)</th>
+          <th data-sort="close">LTP ₹</th>
+          <th data-sort="dayChg">Day %</th>
+          <th data-sort="ratio">Wick / Body</th>
+          <th>O / H / L / C</th>
+          <th data-sort="volume">Candle Vol</th>
+          <th>Charts</th>
+        </tr>
+      </thead>
+      <tbody id="resultBody"></tbody>
+    </table>
+    <div class="empty" id="emptyState">
+      <div class="big">🔨</div>
+      <div>Press <b>Run Scan</b> to screen NSE stocks for hammer candles.</div>
+      <div style="margin-top:6px; font-size:12.5px;">Tip: when the market is closed, increase “Look back candles” to see matches from the last session.</div>
+    </div>
+  </div>
+
+  <details class="errbox" id="errBox" style="display:none;">
+    <summary id="errSummary"></summary>
+    <div id="errList" style="margin-top:8px;"></div>
+  </details>
+
+</div>
+
+<footer>
+  <div style="text-align:center; margin-bottom:14px; font-size:13px; color:var(--accent); letter-spacing:.03em;">
+    ⚒️ made out of boredom by <b>Baklol2.0</b> 🥱
+  </div>
+  <b>Disclaimer:</b> Educational tool only — not investment advice. Data comes from Yahoo Finance via public CORS proxies and may be delayed or occasionally unavailable; verify on your broker/exchange before trading. Hammer rules used: body ≤ max-body% of candle range, lower wick ≥ ratio × body, upper wick ≤ max-opposite-wick% of range (mirrored for inverted hammer).
+</footer>
+
+<script>
+"use strict";
+
+/* ---------------- Stock universes (NSE symbols) ---------------- */
+const NIFTY50 = ["ADANIENT","ADANIPORTS","APOLLOHOSP","ASIANPAINT","AXISBANK","BAJAJ-AUTO","BAJFINANCE","BAJAJFINSV","BEL","BHARTIARTL","CIPLA","COALINDIA","DRREDDY","EICHERMOT","ETERNAL","GRASIM","HCLTECH","HDFCBANK","HDFCLIFE","HEROMOTOCO","HINDALCO","HINDUNILVR","ICICIBANK","INDUSINDBK","INFY","ITC","JIOFIN","JSWSTEEL","KOTAKBANK","LT","M&M","MARUTI","NESTLEIND","NTPC","ONGC","POWERGRID","RELIANCE","SBILIFE","SBIN","SHRIRAMFIN","SUNPHARMA","TATACONSUM","TATAMOTORS","TATASTEEL","TCS","TECHM","TITAN","TRENT","ULTRACEMCO","WIPRO"];
+
+const NEXT50 = ["ABB","ACC","ADANIENSOL","ADANIGREEN","ADANIPOWER","AMBUJACEM","DMART","BAJAJHLDNG","BANKBARODA","BPCL","BOSCHLTD","BRITANNIA","CANBK","CHOLAFIN","DABUR","DIVISLAB","DLF","GAIL","GODREJCP","HAVELLS","HAL","ICICIGI","ICICIPRULI","IOC","INDIGO","NAUKRI","IRFC","JINDALSTEL","JSWENERGY","LICI","LODHA","LTIM","MOTHERSON","PIDILITIND","PFC","PNB","RECLTD","SIEMENS","SHREECEM","TATAPOWER","TORNTPHARM","TVSMOTOR","UNITDSPR","VBL","VEDL","ZYDUSLIFE","BHEL","IRCTC","HINDPETRO","ATGL"];
+
+const MIDCAPS = ["AUROPHARMA","ASHOKLEY","ASTRAL","AUBANK","BANDHANBNK","BERGEPAINT","BIOCON","COLPAL","CONCOR","COFORGE","CUMMINSIND","DALBHARAT","DIXON","ESCORTS","EXIDEIND","FEDERALBNK","GMRAIRPORT","GODREJPROP","HDFCAMC","IDFCFIRSTB","INDHOTEL","INDUSTOWER","JUBLFOOD","KPITTECH","LAURUSLABS","LICHSGFIN","LUPIN","MANKIND","MARICO","MAXHEALTH","MFSL","MPHASIS","MRF","MUTHOOTFIN","NHPC","NMDC","OBEROIRLTY","OFSS","PAGEIND","PAYTM","PERSISTENT","PETRONET","PIIND","POLICYBZR","POLYCAB","PRESTIGE","SAIL","SBICARD","SONACOMS","SRF","SUZLON","TATACHEM","TATACOMM","TATAELXSI","TIINDIA","TORNTPOWER","UNIONBANK","UPL","VOLTAS","YESBANK","IDEA","IGL","INDIANB","BHARATFORG","APLAPOLLO","BALKRISIND","ALKEM","BSE","CDSL","CGPOWER","COROMANDEL","DELHIVERY","FORTIS","GLENMARK","APOLLOTYRE","BATAINDIA","CROMPTON","DEEPAKNTR","GUJGASLTD","HINDCOPPER","IEX","IRB","JSL","JKCEMENT","KALYANKJIL","LTF","MANAPPURAM","MAZDOCK","MCX","NATIONALUM","NBCC","NCC","PEL","PHOENIXLTD","RVNL","SJVN","SUNTV","SYNGENE","TATATECH","TITAGARH","TRIDENT","ZEEL"];
+
+const UNIVERSES = {
+  nifty50: NIFTY50,
+  nifty100: NIFTY50.concat(NEXT50),
+  extended: NIFTY50.concat(NEXT50, MIDCAPS)
+};
+
+/* ---------------- CORS proxies with failover ---------------- */
+const PROXIES = [
+  u => "https://corsproxy.io/?url=" + encodeURIComponent(u),
+  u => "https://api.allorigins.win/raw?url=" + encodeURIComponent(u),
+  u => "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(u)
+];
+let proxyIdx = 0; // sticky: keep using whichever proxy works
+
+const INTERVAL_SEC = { "5m": 300, "15m": 900, "30m": 1800, "60m": 3600 };
+
+function yahooUrl(symbol, interval) {
+  const range = (interval === "60m" || interval === "30m") ? "5d" : "1d";
+  return "https://query1.finance.yahoo.com/v8/finance/chart/" +
+         encodeURIComponent(symbol + ".NS") +
+         "?interval=" + interval + "&range=" + range;
+}
+
+async function fetchJson(url) {
+  let lastErr;
+  for (let attempt = 0; attempt < PROXIES.length; attempt++) {
+    const idx = (proxyIdx + attempt) % PROXIES.length;
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 15000);
+      const res = await fetch(PROXIES[idx](url), { signal: ctrl.signal });
+      clearTimeout(t);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      if (!data || !data.chart) throw new Error("bad payload");
+      proxyIdx = idx;
+      return data;
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error("all proxies failed");
+}
+
+/* ---------------- Pattern detection ---------------- */
+function classifyCandle(o, h, l, c, cfg) {
+  const range = h - l;
+  if (!(range > 0)) return null;
+  const body = Math.abs(c - o);
+  const lower = Math.min(o, c) - l;
+  const upper = h - Math.max(o, c);
+  const bodyOk = body <= (cfg.maxBodyPct / 100) * range;
+  const effBody = Math.max(body, range * 0.02); // avoid divide-by-zero on doji
+
+  const isHammer = bodyOk &&
+    lower >= cfg.wickRatio * effBody &&
+    upper <= (cfg.maxOppWickPct / 100) * range;
+
+  const isInverted = bodyOk &&
+    upper >= cfg.wickRatio * effBody &&
+    lower <= (cfg.maxOppWickPct / 100) * range;
+
+  if (isHammer && (cfg.pattern === "hammer" || cfg.pattern === "both"))
+    return { type: "Hammer", ratio: lower / effBody };
+  if (isInverted && (cfg.pattern === "inverted" || cfg.pattern === "both"))
+    return { type: "Inverted", ratio: upper / effBody };
+  return null;
+}
+
+function scanSymbolData(symbol, data, cfg) {
+  const r = data.chart && data.chart.result && data.chart.result[0];
+  if (!r || !r.timestamp) return null;
+  const q = r.indicators.quote[0];
+  const meta = r.meta || {};
+  const ts = r.timestamp;
+  const n = ts.length;
+  const nowSec = Date.now() / 1000;
+  const step = INTERVAL_SEC[cfg.interval];
+
+  // last index: skip forming candle unless included
+  let lastIdx = n - 1;
+  if (!cfg.includeForming && ts[lastIdx] + step > nowSec) lastIdx--;
+  if (lastIdx < 0) return null;
+
+  for (let k = 0; k < cfg.lookback; k++) {
+    const i = lastIdx - k;
+    if (i < 0) break;
+    const o = q.open[i], h = q.high[i], l = q.low[i], c = q.close[i], v = q.volume[i] || 0;
+    if (o == null || h == null || l == null || c == null) continue;
+    if (c < cfg.minPrice || c > cfg.maxPrice) continue;
+    if (v < cfg.minVol) continue;
+    if (cfg.bullishOnly && !(c > o)) continue;
+    const hit = classifyCandle(o, h, l, c, cfg);
+    if (hit) {
+      const prevClose = meta.chartPreviousClose || meta.previousClose || null;
+      const ltp = meta.regularMarketPrice || c;
+      return {
+        symbol,
+        name: meta.longName || meta.shortName || "",
+        type: hit.type,
+        ratio: hit.ratio,
+        o, h, l, c, volume: v,
+        close: ltp,
+        dayChg: prevClose ? ((ltp - prevClose) / prevClose) * 100 : null,
+        candleTime: ts[i],
+        forming: ts[i] + step > nowSec
+      };
+    }
+  }
+  return null;
+}
+
+/* ---------------- Scan orchestration ---------------- */
+let results = [];
+let sortKey = "ratio", sortDir = -1;
+let scanning = false;
+let autoTimer = null;
+
+function readCfg() {
+  return {
+    interval: document.getElementById("interval").value,
+    pattern: document.getElementById("pattern").value,
+    lookback: parseInt(document.getElementById("lookback").value, 10),
+    wickRatio: parseFloat(document.getElementById("wickRatio").value) || 2,
+    maxBodyPct: parseFloat(document.getElementById("maxBodyPct").value) || 35,
+    maxOppWickPct: parseFloat(document.getElementById("maxOppWickPct").value) || 15,
+    minPrice: parseFloat(document.getElementById("minPrice").value) || 0,
+    maxPrice: parseFloat(document.getElementById("maxPrice").value) || Infinity,
+    minVol: parseFloat(document.getElementById("minVol").value) || 0,
+    bullishOnly: document.getElementById("bullishOnly").checked,
+    includeForming: document.getElementById("includeForming").checked
+  };
+}
+
+function getSymbols() {
+  const u = document.getElementById("universe").value;
+  if (u === "custom") {
+    return document.getElementById("customSyms").value
+      .split(",").map(s => s.trim().toUpperCase()).filter(Boolean);
+  }
+  return UNIVERSES[u];
+}
+
+async function runScan() {
+  if (scanning) return;
+  const symbols = getSymbols();
+  if (!symbols.length) { alert("No symbols to scan — enter a custom list."); return; }
+  scanning = true;
+  const cfg = readCfg();
+  const btn = document.getElementById("scanBtn");
+  btn.disabled = true; btn.textContent = "Scanning…";
+  const progWrap = document.getElementById("progressWrap");
+  progWrap.classList.add("active");
+  results = [];
+  const errors = [];
+  let done = 0;
+
+  const CONCURRENCY = 6;
+  const queue = symbols.slice();
+
+  async function worker() {
+    while (queue.length) {
+      const sym = queue.shift();
+      try {
+        const data = await fetchJson(yahooUrl(sym, cfg.interval));
+        const hit = scanSymbolData(sym, data, cfg);
+        if (hit) { results.push(hit); renderTable(); }
+      } catch (e) {
+        errors.push(sym + " — " + (e && e.message ? e.message : "failed"));
+      }
+      done++;
+      const pct = Math.round((done / symbols.length) * 100);
+      document.getElementById("progFill").style.width = pct + "%";
+      document.getElementById("progPct").textContent = pct + "%";
+      document.getElementById("progText").textContent =
+        "Scanning " + done + " / " + symbols.length + " · " + results.length + " match" + (results.length === 1 ? "" : "es");
+    }
+  }
+  await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+
+  scanning = false;
+  btn.disabled = false; btn.textContent = "▶ Run Scan";
+  progWrap.classList.remove("active");
+
+  // summary
+  document.getElementById("summaryCards").style.display = "flex";
+  document.getElementById("cScanned").textContent = symbols.length - errors.length;
+  document.getElementById("cMatches").textContent = results.length;
+  document.getElementById("cTf").textContent = cfg.interval.replace("m", " min");
+  document.getElementById("cTime").textContent = new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+
+  const errBox = document.getElementById("errBox");
+  if (errors.length) {
+    errBox.style.display = "block";
+    document.getElementById("errSummary").textContent = errors.length + " symbol(s) could not be fetched (click to view)";
+    document.getElementById("errList").textContent = errors.join("  ·  ");
+  } else errBox.style.display = "none";
+
+  renderTable();
+}
+
+/* ---------------- Rendering ---------------- */
+function candleSvg(o, h, l, c) {
+  const range = h - l || 1;
+  const y = v => 4 + ((h - v) / range) * 40;
+  const top = Math.max(o, c), bot = Math.min(o, c);
+  const color = c >= o ? "var(--green-bright)" : "var(--red)";
+  const bodyH = Math.max(1.5, y(bot) - y(top));
+  return '<svg width="20" height="48" viewBox="0 0 20 48">' +
+    '<line x1="10" y1="' + y(h) + '" x2="10" y2="' + y(l) + '" stroke="' + color + '" stroke-width="1.6"/>' +
+    '<rect x="5" y="' + y(top) + '" width="10" height="' + bodyH + '" rx="1" fill="' + color + '"/>' +
+    "</svg>";
+}
+
+function fmtVol(v) {
+  if (v >= 1e7) return (v / 1e7).toFixed(2) + " Cr";
+  if (v >= 1e5) return (v / 1e5).toFixed(2) + " L";
+  if (v >= 1e3) return (v / 1e3).toFixed(1) + " K";
+  return String(v);
+}
+
+function tvSym(s) { return "NSE:" + s.replace(/[&-]/g, "_"); }
+
+function renderTable() {
+  const tbl = document.getElementById("resultTable");
+  const empty = document.getElementById("emptyState");
+  const body = document.getElementById("resultBody");
+
+  if (!results.length) {
+    tbl.style.display = "none";
+    empty.style.display = "block";
+    if (!scanning) {
+      empty.innerHTML = '<div class="big">🔍</div><div>No hammer candles found with the current rules.</div><div style="margin-top:6px;font-size:12.5px;">Try a bigger universe, more look-back candles, or relax the pattern rules.</div>';
+    }
+    return;
+  }
+  tbl.style.display = "table";
+  empty.style.display = "none";
+
+  const sorted = results.slice().sort((a, b) => {
+    let x = a[sortKey], y = b[sortKey];
+    if (x == null) x = -Infinity; if (y == null) y = -Infinity;
+    if (typeof x === "string") return sortDir * x.localeCompare(y);
+    return sortDir * (x - y);
+  });
+
+  body.innerHTML = sorted.map(r => {
+    const t = new Date(r.candleTime * 1000).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit" });
+    const d = new Date(r.candleTime * 1000).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata", day: "2-digit", month: "short" });
+    const chg = r.dayChg == null ? "–" :
+      '<span class="' + (r.dayChg >= 0 ? "up" : "dn") + '">' + (r.dayChg >= 0 ? "+" : "") + r.dayChg.toFixed(2) + "%</span>";
+    const typeTag = r.type === "Inverted" ? ' <span style="font-size:10px;color:var(--muted);">(INV)</span>' : "";
+    const formTag = r.forming ? ' <span style="font-size:10px;color:var(--accent);">LIVE</span>' : "";
+    return "<tr>" +
+      '<td><div class="sym">' + r.symbol + typeTag + '</div><div class="name">' + r.name + "</div></td>" +
+      "<td>" + candleSvg(r.o, r.h, r.l, r.c) + "</td>" +
+      "<td>" + t + ' <span style="color:var(--muted);font-size:11px;">' + d + "</span>" + formTag + "</td>" +
+      "<td><b>" + r.close.toFixed(2) + "</b></td>" +
+      "<td>" + chg + "</td>" +
+      '<td><span class="ratio-pill">' + r.ratio.toFixed(1) + "×</span></td>" +
+      '<td style="font-size:12px;color:var(--muted);">' + r.o.toFixed(1) + " / " + r.h.toFixed(1) + " / " + r.l.toFixed(1) + " / " + r.c.toFixed(1) + "</td>" +
+      "<td>" + fmtVol(r.volume) + "</td>" +
+      '<td class="links">' +
+        '<a href="https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(tvSym(r.symbol)) + '" target="_blank" rel="noopener">TradingView</a>' +
+        '<a href="https://chartink.com/stocks/' + r.symbol.toLowerCase().replace(/[^a-z0-9]/g, "") + '.html" target="_blank" rel="noopener">Chartink</a>' +
+      "</td></tr>";
+  }).join("");
+}
+
+/* ---------------- Market status (NSE: 9:15–15:30 IST, Mon–Fri) ---------------- */
+function updateMarketBadge() {
+  const now = new Date();
+  const ist = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+  const day = ist.getDay();
+  const mins = ist.getHours() * 60 + ist.getMinutes();
+  const open = day >= 1 && day <= 5 && mins >= 555 && mins <= 930;
+  const badge = document.getElementById("mktBadge");
+  badge.classList.toggle("open", open);
+  document.getElementById("mktText").textContent = open
+    ? "Market OPEN · " + ist.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }) + " IST"
+    : "Market closed · " + ist.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }) + " IST";
+}
+
+/* ---------------- Wiring ---------------- */
+document.getElementById("scanBtn").addEventListener("click", runScan);
+document.getElementById("universe").addEventListener("change", e => {
+  document.getElementById("customRow").style.display = e.target.value === "custom" ? "flex" : "none";
+});
+document.getElementById("autoRefresh").addEventListener("change", e => {
+  if (e.target.checked) {
+    autoTimer = setInterval(() => { if (!scanning) runScan(); }, 5 * 60 * 1000);
+  } else if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+});
+document.querySelectorAll("thead th[data-sort]").forEach(th => {
+  th.addEventListener("click", () => {
+    const k = th.dataset.sort;
+    if (sortKey === k) sortDir *= -1; else { sortKey = k; sortDir = -1; }
+    document.querySelectorAll("thead th .arrow").forEach(a => a.remove());
+    const s = document.createElement("span");
+    s.className = "arrow"; s.textContent = sortDir === -1 ? "▼" : "▲";
+    th.appendChild(s);
+    renderTable();
+  });
+});
+
+updateMarketBadge();
+setInterval(updateMarketBadge, 30000);
+</script>
+</body>
+</html>
