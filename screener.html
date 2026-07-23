@@ -85,6 +85,37 @@
   select:focus, input:focus { outline: none; border-color: var(--accent); }
   .chk { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text); padding: 8px 0; cursor: pointer; user-select: none; }
   .chk input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+  .pat-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 6px 13px;
+    font-size: 12.5px;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color .15s, background .15s;
+  }
+  .chip:has(input:checked) { border-color: rgba(240,180,41,.55); background: rgba(240,180,41,.09); }
+  .chip input { accent-color: var(--accent); width: 13px; height: 13px; cursor: pointer; }
+  .pat-tag {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    padding: 1.5px 7px;
+    border-radius: 9px;
+    margin-left: 6px;
+    vertical-align: 1px;
+    border: 1px solid;
+  }
+  .pt-HAM  { color: var(--green-bright); border-color: rgba(63,185,80,.45);  background: rgba(63,185,80,.1); }
+  .pt-INV  { color: #d29922;             border-color: rgba(210,153,34,.45); background: rgba(210,153,34,.1); }
+  .pt-DFD  { color: #58c8f5;             border-color: rgba(88,200,245,.45); background: rgba(88,200,245,.1); }
+  .pt-GSD  { color: var(--red);          border-color: rgba(229,83,75,.45);  background: rgba(229,83,75,.1); }
+  .pt-DOJI { color: var(--muted);        border-color: rgba(139,148,158,.5); background: rgba(139,148,158,.1); }
+  .pt-SPIN { color: #bc8cff;             border-color: rgba(188,140,255,.45);background: rgba(188,140,255,.1); }
 
   #scanBtn {
     background: var(--accent);
@@ -200,7 +231,7 @@
   </div>
   <div>
     <h1>Hammer Candle Screener</h1>
-    <div class="sub">NSE intraday · hammer pattern on 15-minute candles · Yahoo Finance data</div>
+    <div class="sub">NSE intraday · hammer, doji &amp; spinning-top patterns · Yahoo Finance data</div>
   </div>
   <div class="mkt-badge" id="mktBadge"><span class="dot"></span><span id="mktText">Checking market…</span></div>
 </header>
@@ -228,14 +259,6 @@
         </select>
       </div>
       <div class="field">
-        <label>Pattern</label>
-        <select id="pattern">
-          <option value="hammer" selected>Hammer (long lower wick)</option>
-          <option value="inverted">Inverted hammer (long upper wick)</option>
-          <option value="both">Both</option>
-        </select>
-      </div>
-      <div class="field">
         <label>Look back candles</label>
         <select id="lookback">
           <option value="1" selected>Latest only</option>
@@ -248,6 +271,20 @@
       <label class="chk" style="margin-left:4px;">
         <input type="checkbox" id="autoRefresh"> Auto re-scan every 5 min
       </label>
+    </div>
+
+    <div class="ctl-row">
+      <div class="field" style="width:100%;">
+        <label>Patterns to scan</label>
+        <div class="pat-chips">
+          <label class="chip"><input type="checkbox" class="pat" value="hammer" checked> 🔨 Hammer</label>
+          <label class="chip"><input type="checkbox" class="pat" value="inverted" checked> 🔃 Inverted Hammer</label>
+          <label class="chip"><input type="checkbox" class="pat" value="dragonfly" checked> 🐉 Dragonfly Doji</label>
+          <label class="chip"><input type="checkbox" class="pat" value="gravestone" checked> 🪦 Gravestone Doji</label>
+          <label class="chip"><input type="checkbox" class="pat" value="doji" checked> ➕ Doji</label>
+          <label class="chip"><input type="checkbox" class="pat" value="spinning" checked> 🌀 Spinning Top</label>
+        </div>
+      </div>
     </div>
 
     <div class="ctl-row" id="customRow" style="display:none;">
@@ -267,6 +304,10 @@
         <div class="field">
           <label>Max body (% of range)</label>
           <input type="number" id="maxBodyPct" value="35" min="5" max="100" step="5">
+        </div>
+        <div class="field">
+          <label>Doji body ≤ (% of range)</label>
+          <input type="number" id="dojiBodyPct" value="8" min="1" max="30" step="1">
         </div>
         <div class="field">
           <label>Max opposite wick (% of range)</label>
@@ -337,7 +378,7 @@
   <div style="text-align:center; margin-bottom:14px; font-size:13px; color:var(--accent); letter-spacing:.03em;">
     ⚒️ made out of boredom by <b>Baklol2.0</b> 🥱
   </div>
-  <b>Disclaimer:</b> Educational tool only — not investment advice. Data comes from Yahoo Finance via public CORS proxies and may be delayed or occasionally unavailable; verify on your broker/exchange before trading. Hammer rules used: body ≤ max-body% of candle range, lower wick ≥ ratio × body, upper wick ≤ max-opposite-wick% of range (mirrored for inverted hammer).
+  <b>Disclaimer:</b> Educational tool only — not investment advice. Data comes from Yahoo Finance via public CORS proxies and may be delayed or occasionally unavailable; verify on your broker/exchange before trading. Pattern rules: <b>Doji</b> = body ≤ doji-body% of range; <b>Dragonfly</b> / <b>Gravestone</b> = doji body pinned to top/bottom with one long wick; <b>Hammer</b> / <b>Inverted</b> = small body with lower/upper wick ≥ ratio × body and a negligible opposite wick; <b>Spinning Top</b> = small body with meaningful wicks on both sides.
 </footer>
 
 <script>
@@ -392,28 +433,68 @@ async function fetchJson(url) {
   throw lastErr || new Error("all proxies failed");
 }
 
-/* ---------------- Pattern detection ---------------- */
+/* ---------------- Pattern detection ----------------
+   Checked most-specific first. `cfg.patterns` is a Set of enabled keys:
+   hammer, inverted, dragonfly, gravestone, doji, spinning.               */
+const PATTERN_META = {
+  hammer:     { type: "Hammer",          tag: "HAM",  cls: "pt-HAM"  },
+  inverted:   { type: "Inverted Hammer", tag: "INV",  cls: "pt-INV"  },
+  dragonfly:  { type: "Dragonfly Doji",  tag: "DFD",  cls: "pt-DFD"  },
+  gravestone: { type: "Gravestone Doji", tag: "GSD",  cls: "pt-GSD"  },
+  doji:       { type: "Doji",            tag: "DOJI", cls: "pt-DOJI" },
+  spinning:   { type: "Spinning Top",    tag: "SPIN", cls: "pt-SPIN" }
+};
+
 function classifyCandle(o, h, l, c, cfg) {
   const range = h - l;
   if (!(range > 0)) return null;
+  const P = cfg.patterns;
   const body = Math.abs(c - o);
   const lower = Math.min(o, c) - l;
   const upper = h - Math.max(o, c);
-  const bodyOk = body <= (cfg.maxBodyPct / 100) * range;
-  const effBody = Math.max(body, range * 0.02); // avoid divide-by-zero on doji
+  const effBody = Math.max(body, range * 0.01); // guard divide-by-zero on doji
 
-  const isHammer = bodyOk &&
-    lower >= cfg.wickRatio * effBody &&
-    upper <= (cfg.maxOppWickPct / 100) * range;
+  const bodyPct   = body / range;
+  const oppLimit  = (cfg.maxOppWickPct / 100) * range;   // "negligible" wick ceiling
+  const isDoji    = bodyPct <= (cfg.dojiBodyPct / 100);  // very small body
+  const smallBody = bodyPct <= (cfg.maxBodyPct / 100);   // hammer/spinning body ceiling
 
-  const isInverted = bodyOk &&
-    upper >= cfg.wickRatio * effBody &&
-    lower <= (cfg.maxOppWickPct / 100) * range;
+  function hit(key, ratio) {
+    if (!P.has(key)) return null;
+    return { key, type: PATTERN_META[key].type, tag: PATTERN_META[key].tag,
+             cls: PATTERN_META[key].cls, ratio };
+  }
 
-  if (isHammer && (cfg.pattern === "hammer" || cfg.pattern === "both"))
-    return { type: "Hammer", ratio: lower / effBody };
-  if (isInverted && (cfg.pattern === "inverted" || cfg.pattern === "both"))
-    return { type: "Inverted", ratio: upper / effBody };
+  // --- Doji family (tiniest body) evaluated first ---
+  if (isDoji) {
+    const longLower = lower >= 0.55 * range && upper <= oppLimit;
+    const longUpper = upper >= 0.55 * range && lower <= oppLimit;
+    if (longLower) { const r = hit("dragonfly", lower / effBody); if (r) return r; }
+    if (longUpper) { const r = hit("gravestone", upper / effBody); if (r) return r; }
+    // neither wick dominates → standard (cross) doji
+    if (!longLower && !longUpper) {
+      const r = hit("doji", Math.max(upper, lower) / effBody); if (r) return r;
+    }
+  }
+
+  // --- Hammer / Inverted hammer (small but real body, one long wick) ---
+  if (smallBody && !isDoji) {
+    if (lower >= cfg.wickRatio * effBody && upper <= oppLimit) {
+      const r = hit("hammer", lower / effBody); if (r) return r;
+    }
+    if (upper >= cfg.wickRatio * effBody && lower <= oppLimit) {
+      const r = hit("inverted", upper / effBody); if (r) return r;
+    }
+  }
+
+  // --- Spinning top (small body, meaningful wicks on BOTH sides) ---
+  if (smallBody) {
+    const wickFloor = Math.max(effBody * 0.9, 0.15 * range);
+    if (upper >= wickFloor && lower >= wickFloor) {
+      const r = hit("spinning", Math.min(upper, lower) / effBody); if (r) return r;
+    }
+  }
+
   return null;
 }
 
@@ -448,6 +529,8 @@ function scanSymbolData(symbol, data, cfg) {
         symbol,
         name: meta.longName || meta.shortName || "",
         type: hit.type,
+        tag: hit.tag,
+        cls: hit.cls,
         ratio: hit.ratio,
         o, h, l, c, volume: v,
         close: ltp,
@@ -467,12 +550,16 @@ let scanning = false;
 let autoTimer = null;
 
 function readCfg() {
+  const patterns = new Set(
+    Array.from(document.querySelectorAll("input.pat:checked")).map(el => el.value)
+  );
   return {
     interval: document.getElementById("interval").value,
-    pattern: document.getElementById("pattern").value,
+    patterns,
     lookback: parseInt(document.getElementById("lookback").value, 10),
     wickRatio: parseFloat(document.getElementById("wickRatio").value) || 2,
     maxBodyPct: parseFloat(document.getElementById("maxBodyPct").value) || 35,
+    dojiBodyPct: parseFloat(document.getElementById("dojiBodyPct").value) || 8,
     maxOppWickPct: parseFloat(document.getElementById("maxOppWickPct").value) || 15,
     minPrice: parseFloat(document.getElementById("minPrice").value) || 0,
     maxPrice: parseFloat(document.getElementById("maxPrice").value) || Infinity,
@@ -495,8 +582,9 @@ async function runScan() {
   if (scanning) return;
   const symbols = getSymbols();
   if (!symbols.length) { alert("No symbols to scan — enter a custom list."); return; }
-  scanning = true;
   const cfg = readCfg();
+  if (!cfg.patterns.size) { alert("Select at least one pattern to scan for."); return; }
+  scanning = true;
   const btn = document.getElementById("scanBtn");
   btn.disabled = true; btn.textContent = "Scanning…";
   const progWrap = document.getElementById("progressWrap");
@@ -599,7 +687,7 @@ function renderTable() {
     const d = new Date(r.candleTime * 1000).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata", day: "2-digit", month: "short" });
     const chg = r.dayChg == null ? "–" :
       '<span class="' + (r.dayChg >= 0 ? "up" : "dn") + '">' + (r.dayChg >= 0 ? "+" : "") + r.dayChg.toFixed(2) + "%</span>";
-    const typeTag = r.type === "Inverted" ? ' <span style="font-size:10px;color:var(--muted);">(INV)</span>' : "";
+    const typeTag = ' <span class="pat-tag ' + r.cls + '" title="' + r.type + '">' + r.tag + "</span>";
     const formTag = r.forming ? ' <span style="font-size:10px;color:var(--accent);">LIVE</span>' : "";
     return "<tr>" +
       '<td><div class="sym">' + r.symbol + typeTag + '</div><div class="name">' + r.name + "</div></td>" +
